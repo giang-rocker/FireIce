@@ -39,9 +39,11 @@ public final class MainBoard extends javax.swing.JFrame {
     final BufferedImage bgImg;
     final BufferedImage blankTile;
     final BufferedImage labelImg;
-    String fileName ;
+    String fileName;
     int humanWin = 0;
     int AIWin = 0;
+    boolean isHumanRed;
+    boolean isHumanPlayFirst;
 
     boolean boardUpdate = false;
     int nSize = 0;
@@ -54,7 +56,7 @@ public final class MainBoard extends javax.swing.JFrame {
     public MainBoard(String fileName, boolean isHumanRed, boolean isHumanPlayFirst) throws FileNotFoundException, IOException {
         initComponents();
         this.fileName = fileName;
-        readBoardConfiguration(fileName);
+        readBoardConfiguration(fileName, isHumanRed, isHumanPlayFirst);
         redBlock = ImageIO.read(new File("img/r64.png"));
         blueBlock = ImageIO.read(new File("img/b64.png"));
         redBlockHover = ImageIO.read(new File("img/r64_hover.png"));
@@ -63,25 +65,26 @@ public final class MainBoard extends javax.swing.JFrame {
         bgImg = ImageIO.read(new File("img/bg3.png"));
         labelImg = ImageIO.read(new File("img/blankLabel.png"));
         this.nSize = this.boardGame.nSize;
-        this.setSize(nSize * UNIT + marginX * 3 + 142, nSize * UNIT + (marginY *2));
+        this.setSize(nSize * UNIT + marginX * 3 + 142, nSize * UNIT + (marginY * 2));
         // init label
         int dx = nSize * UNIT + marginX * 2;
         int dy = 1 * UNIT;
         
-        if (!isHumanRed){
-            this.lbGameHumanInfor.setForeground(new Color(1,187,234));
+        this.isHumanRed = isHumanRed;
+        this.isHumanPlayFirst = isHumanPlayFirst;
+
+        if (!isHumanRed) {
+            this.lbGameHumanInfor.setForeground(new Color(1, 187, 234));
             this.lbGameHumanInfor.setText("Human-BLUE 0");
-            
-            this.lbGameAIInfor.setForeground(new Color(255,33,66));
+
+            this.lbGameAIInfor.setForeground(new Color(255, 33, 66));
             this.lbGameAIInfor.setText("AI-RED 0");
         }
-     
 
-        // draw background once
-        // MiniMax = new Node(this.boardGame);
+       
     }
 
-    public void readBoardConfiguration(String fileName) throws FileNotFoundException {
+    public void readBoardConfiguration(String fileName, boolean isHumanRed, boolean isHumanPlayFirst) throws FileNotFoundException {
         // read file
         // pass the path to the file as a parameter 
 
@@ -102,20 +105,29 @@ public final class MainBoard extends javax.swing.JFrame {
         System.out.println(config.length());
 
         System.out.println(config);
-        this.boardGame = new Board(n, config);
+        this.boardGame = new Board(n, config, isHumanRed, isHumanPlayFirst);
         
+        if (isHumanRed)
         this.lbPlayerTurn.setText("Red Turn");
-        this.lbGameAIInfor.setText("- "+AIWin+" AI-BLUE");
-        this.lbGameHumanInfor.setText("Human-RED "+humanWin);
+        else 
+        this.lbPlayerTurn.setText("Blue Turn");
         
-          
+        if (isHumanRed){
+        this.lbGameAIInfor.setText("- " + AIWin + " AI-BLUE");
+        this.lbGameHumanInfor.setText("Human-RED " + humanWin);
+        }
+        else {
+        this.lbGameAIInfor.setText("- " + AIWin + " AI-RED");
+        this.lbGameHumanInfor.setText("Human-BLUE " + humanWin);
+        }
+
         // AI move first
-        if(this.boardGame.currentPlayer== this.boardGame.AIPlayer) {
+        if (this.boardGame.currentPlayer == this.boardGame.AIPlayer) {
             getAIMove();
         }
         this.nSize = this.boardGame.nSize;
-        this.setSize(nSize * UNIT + marginX * 3 + 142, nSize * UNIT + (marginY *2));
-     }
+        this.setSize(nSize * UNIT + marginX * 3 + 142, nSize * UNIT + (marginY * 2));
+    }
 
     int marginX = 32;
     int marginY = 32;
@@ -163,19 +175,18 @@ public final class MainBoard extends javax.swing.JFrame {
         g.drawString(this.boardGame.redScore + "", dx + 55, dy + 45);
         g.drawImage(labelImg, dx, (this.nSize - 1) * UNIT, null);
         g.setColor(Color.blue);
-        g.drawString(  this.boardGame.blueScore + "", dx + 55, (this.nSize - 1) * UNIT + 45);
+        g.drawString(this.boardGame.blueScore + "", dx + 55, (this.nSize - 1) * UNIT + 45);
 
         g.setFont(new Font("default", Font.PLAIN, 50));
         dx = (this.nSize / 2) * UNIT;
         if (this.boardGame.winner == TileType.RED) {
             g.setColor(Color.red);
-            g.drawString(gameResult, dx-30, 50+dx);
+            g.drawString(gameResult, dx - 30, 50 + dx);
         } else if (this.boardGame.winner == TileType.BLUE) {
             g.setColor(Color.blue);
-            g.drawString(gameResult, dx-30, 50+dx);
+            g.drawString(gameResult, dx - 30, 50 + dx);
         }
-        
-       
+
     }
 
     /**
@@ -194,6 +205,7 @@ public final class MainBoard extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("FireIce v1.0");
+        setUndecorated(true);
         setResizable(false);
         addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent evt) {
@@ -263,106 +275,136 @@ public final class MainBoard extends javax.swing.JFrame {
         sX = (int) (mouseX - marginX) / 64;
         sY = (int) (mouseY - marginY) / 64;
 
-        this.paint(this.getGraphics());
-        
+//     /   this.paint(this.getGraphics());
+
 
     }//GEN-LAST:event_formMouseMoved
     String gameResult = "";
     private void formMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseReleased
-       
+        
+        if (AIisThinking) {
+            System.out.println("AI is thinking...");
+            return;
+        }
+        
+        if (!(this.boardGame.isValidMove(sX, sY))) {
+            System.out.println("Invalid Move");
+            return;
+        }
 
-            if (!(this.boardGame.isValidMove(sX, sY))) {
-                System.out.println("Invalid Move");
-                return;
+        this.boardGame.takeTurn(sX, sY);
+        //moveHuman++;
+
+        System.out.println("Player move: " + sX + " " + sY);
+        if (this.boardGame.winner != TileType.EMPTY) {
+            if (this.boardGame.winner == this.boardGame.HumanPlayer) {
+                humanWin++;
+                gameResult = "HUMAN WIN";
+            } else {
+                gameResult = "AI WIN";
+                AIWin++;
             }
-
-            this.boardGame.takeTurn(sX, sY);
-            //moveHuman++;
-
-            System.out.println("Player move: " + sX + " " + sY);
-            if (this.boardGame.winner != TileType.EMPTY) {
-                if (this.boardGame.winner == this.boardGame.HumanPlayer) {
-                    humanWin++;
-                    gameResult = "HUMAN WIN";
-                } else {
-                    gameResult = "AI WIN";
-                    AIWin++;
-                }
-                return;
-            }
-
             this.paint(this.getGraphics());
+            return;
+        }
+    this.paint(this.getGraphics());
 //            try {
 //                Thread.sleep(1000);
 //            } catch (InterruptedException ex) {
 //                Logger.getLogger(MainBoard.class.getName()).log(Level.SEVERE, null, ex);
 //            }
 
-            // AI turn
-            getAIMove();
-            
-    }//GEN-LAST:event_formMouseReleased
-
-    void getAIMove(){
-        long startTime = System.currentTimeMillis();
-            MiniMax = new Node(this.boardGame);
-            MiniMax.rootPlayer = this.boardGame.currentPlayer;
-            
-            int maxDepth = 15;
-            int remainingStone = this.boardGame.blueScore+this.boardGame.redScore;
-            int sqrtSize = (int) ( Math.sqrt(remainingStone));
-            // FIX IT LATER
-            switch (sqrtSize) {
-                case 10:
-                case 9: 
-                case 8:{maxDepth = 3; break;}
-                case 7:{maxDepth = 3; break;}
-                case 6: {maxDepth = 5; break;}
-                case 5:{maxDepth = 7; break;}
-            }
-            
-            System.out.println(remainingStone+ " " + sqrtSize + " " + maxDepth );
-            Node.runMinimax(MiniMax, maxDepth , true);
-            sX = MiniMax.moveX;
-            sY = MiniMax.moveY;
-            System.out.println("AI move: " + sX + " " + sY);
-            System.out.println("Score Root: " + (MiniMax.value));
-            this.boardGame.takeTurn(sX, sY);
-            //moveAI++;
-            
-            if (this.boardGame.currentPlayer==TileType.RED) {
-                this.lbPlayerTurn.setText("Red Turn");
+        // AI turn
+        getAIMove();
+        if (this.boardGame.winner != TileType.EMPTY) {
+            if (this.boardGame.winner == this.boardGame.HumanPlayer) {
+                humanWin++;
+                gameResult = "HUMAN WIN";
             } else {
-                this.lbPlayerTurn.setText("Blue Turn");
+                gameResult = "AI WIN";
+                AIWin++;
             }
+            this.paint(this.getGraphics());
+            return;
+        }
+    this.paint(this.getGraphics());
+    }//GEN-LAST:event_formMouseReleased
+    boolean AIisThinking = false;
+    void getAIMove() {
+       AIisThinking = true;
+        long startTime = System.currentTimeMillis();
+        MiniMax = new Node(this.boardGame);
+        MiniMax.rootPlayer = this.boardGame.currentPlayer;
+
+        int maxDepth = 15;
+        int remainingStone = this.boardGame.blueScore + this.boardGame.redScore;
+        int sqrtSize = (int) (Math.sqrt(remainingStone));
+        // FIX IT LATER
+        //double k =  0.05;
+        //int maxDepth= (int)( 15* Math.exp(-k*(remainingStone-15)));
+        //maxDepth = Math.max(3,(maxDepth/2)*2 +1);
+//        //MINIMAX
+//        if (remainingStone > 50) {
+//            maxDepth = 3;
+//        } else if (remainingStone > 30) {
+//            maxDepth = 5;
+//        } else if (remainingStone > 20) {
+//            maxDepth = 7;
+//        }
+
+        //MCTS
+        if (remainingStone > 20) {
+            maxDepth = 3;
+        } else if (remainingStone > 20) {
+            maxDepth = 5;
+        } 
+
+        System.out.println(remainingStone + " " + maxDepth);
+        Node.runMCTS(MiniMax, maxDepth, true);
+        sX = MiniMax.moveX;
+        sY = MiniMax.moveY;
+        System.out.println("AI move: " + sX + " " + sY);
+        System.out.println("Score Root: " + (MiniMax.value));
+       System.out.println("Wining Chance: " + Math.round(MiniMax.chance*100) +"%");
+        
+        this.boardGame.takeTurn(sX, sY);
+        //moveAI++;
+
+        if (this.boardGame.currentPlayer == TileType.RED) {
+            this.lbPlayerTurn.setText("Red Turn");
+        } else {
+            this.lbPlayerTurn.setText("Blue Turn");
+        }
 
 // check game Result
-            if (this.boardGame.winner != TileType.EMPTY) {
-                if (this.boardGame.winner == this.boardGame.HumanPlayer) {
-                    gameResult = "HUMAN WIN";
-                    humanWin++;
-                } else {
-                    gameResult = "AI WIN";
-                    AIWin++;
-                }
-                return;
+        if (this.boardGame.winner != TileType.EMPTY) {
+            if (this.boardGame.winner == this.boardGame.HumanPlayer) {
+                gameResult = "HUMAN WIN";
+                humanWin++;
+            } else {
+                gameResult = "AI WIN";
+                AIWin++;
             }
-            long estimatedTime = System.currentTimeMillis() - startTime;
-            System.out.println("Thinking Time: " + estimatedTime +"ms");
-            this.paint(this.getGraphics());
+            return;
+        }
+        long estimatedTime = System.currentTimeMillis() - startTime;
+        System.out.println("Thinking Time: " + estimatedTime + "ms");
+        this.paint(this.getGraphics());
 //        try {
 //            Thread.sleep(1000);
 //        } catch (InterruptedException ex) {
 //            Logger.getLogger(MainBoard.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-
+AIisThinking = false;
     }
-    
+
     private void btnNewGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewGameActionPerformed
+//       this.dispose();
         try {
             // TODO add your handling code here:
             // create new game
-            readBoardConfiguration(this.fileName);
+            readBoardConfiguration(this.fileName, isHumanRed, isHumanPlayFirst);
+            this.paint(this.getGraphics());
         } catch (FileNotFoundException ex) {
             Logger.getLogger(MainBoard.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -404,7 +446,7 @@ public final class MainBoard extends javax.swing.JFrame {
 
                     int size = 4; //Integer.parseInt(args[0]);
                     //System.out.println("b"+size+".txt");
-                    boardGameForm = new MainBoard("b" + size + ".txt",true,true);
+                    boardGameForm = new MainBoard("boards/b" + size + ".txt", true, true);
                 } catch (IOException ex) {
                     Logger.getLogger(MainBoard.class.getName()).log(Level.SEVERE, null, ex);
                 }

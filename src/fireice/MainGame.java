@@ -14,14 +14,17 @@ import java.io.IOException;
 public class MainGame {
     public static void main(String [] args) throws IOException, InterruptedException
 	{
+            
             ConfigForm config = new ConfigForm();
             config.setVisible(true);
             boolean isHumanPlayFirst = false;
             boolean isHumanRed = false;
+            String fileName = "";
             
             while (config.closed == false) {
             isHumanPlayFirst = config.isHumanPlayFirst;
             isHumanRed= config.isHumanRed;
+            fileName = config.selectedFile;
             
                 Thread.sleep(200);
             
@@ -36,7 +39,8 @@ public class MainGame {
                 System.out.println("Human is Blue & AI Plays First");
            
            
-           MainBoard mainBoard = new MainBoard("b4.txt",isHumanRed,isHumanPlayFirst);
-           mainBoard.setVisible(true);
-	}
+            MainBoard mainBoard = new MainBoard("boards/"+fileName,isHumanRed,isHumanPlayFirst);
+            mainBoard.setVisible(true);
+            }
+         
 }

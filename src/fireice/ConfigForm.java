@@ -13,6 +13,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 
 /**
  *
@@ -41,6 +43,21 @@ public class ConfigForm extends javax.swing.JFrame {
         
         redBlock = ImageIO.read(new File("img/r64.png"));
         blueBlock = ImageIO.read(new File("img/b64.png"));
+        
+         File f = null;
+        String[] paths;
+        int count = 0;
+        try {
+            f = new File("boards");
+            paths = f.list();
+            for (String path : paths) {
+                count ++;
+                listMap.addItem(path);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //lbBoard.setText("Boards (found"+count+" files)");
     }
     
     
@@ -48,11 +65,11 @@ public class ConfigForm extends javax.swing.JFrame {
     public void paint(Graphics g) {
         super.paint(g);
         
-        int dx = 20, dy=90 ;
+        int dx = 20, dy=120 ;
         g.drawImage(redBlock, dx, dy, null);
         
-        dx = 190 ;
-        dy=90 ;
+        dx = 175 ;
+        dy=120 ;
         g.drawImage(blueBlock, dx, dy, null);
       
     }
@@ -73,6 +90,8 @@ public class ConfigForm extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         btn_StartGame = new javax.swing.JButton();
+        lbBoard = new javax.swing.JLabel();
+        listMap = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("FireIce v1.0");
@@ -116,16 +135,18 @@ public class ConfigForm extends javax.swing.JFrame {
             }
         });
 
+        lbBoard.setText("Board:");
+
+        listMap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listMapActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(87, 87, 87)
-                .addComponent(rbtn_Red)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(rbtn_Blue)
-                .addGap(48, 48, 48))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -135,32 +156,52 @@ public class ConfigForm extends javax.swing.JFrame {
                             .addComponent(jLabel2)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(85, 85, 85)
-                        .addComponent(rbtn_HumanFirst)
-                        .addGap(61, 61, 61)
-                        .addComponent(rbtn_AIFirst))
+                        .addComponent(rbtn_Red))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(135, 135, 135)
+                        .addGap(125, 125, 125)
                         .addComponent(btn_StartGame)))
-                .addContainerGap(118, Short.MAX_VALUE))
+                .addContainerGap(109, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbBoard)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(rbtn_Blue)
+                        .addGap(48, 48, 48))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(listMap, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(69, 69, 69)
+                .addComponent(rbtn_HumanFirst)
+                .addGap(61, 61, 61)
+                .addComponent(rbtn_AIFirst)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(1, 1, 1)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rbtn_HumanFirst)
                     .addComponent(rbtn_AIFirst))
-                .addGap(18, 18, 18)
+                .addGap(19, 19, 19)
                 .addComponent(jLabel1)
                 .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rbtn_Red)
                     .addComponent(rbtn_Blue))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addGap(42, 42, 42)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbBoard)
+                    .addComponent(listMap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
                 .addComponent(btn_StartGame)
-                .addContainerGap())
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         pack();
@@ -196,6 +237,13 @@ public class ConfigForm extends javax.swing.JFrame {
         // TODO add your handling code here:
         isHumanRed = false;
     }//GEN-LAST:event_rbtn_BlueActionPerformed
+String selectedFile = "";
+    private void listMapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listMapActionPerformed
+        // TODO add your handling code here:
+        selectedFile = listMap.getSelectedItem().toString();
+        //System.out.println(selectedFile);
+        
+    }//GEN-LAST:event_listMapActionPerformed
 
     /**
      * @param args the command line arguments
@@ -240,6 +288,8 @@ public class ConfigForm extends javax.swing.JFrame {
     private javax.swing.JButton btn_StartGame;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel lbBoard;
+    private javax.swing.JComboBox<String> listMap;
     private javax.swing.JRadioButton rbtn_AIFirst;
     private javax.swing.JRadioButton rbtn_Blue;
     private javax.swing.JRadioButton rbtn_HumanFirst;
