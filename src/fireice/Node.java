@@ -153,6 +153,7 @@ static double runMCTS(Node node, int depth, boolean maximizingPlayer) {
         if (maximizingPlayer) {
             double value = -9999999;
             int nSize = node.boardGame.nSize;
+            double minMaxValue =0;
             for (int i = 0; i < nSize; i++) {
                 for (int j = 0; j < nSize; j++) {
                     if (node.boardGame.currentPlayer == node.boardGame.board[i][j]) {
@@ -164,7 +165,7 @@ static double runMCTS(Node node, int depth, boolean maximizingPlayer) {
                         childNode.boardGame.takeTurn(i, j);
                         // apply immedieatly ?
                         //nodeChilds.add(childNode);
-                        double minMaxValue = runMCTS(childNode, depth - 1, false);
+                        minMaxValue += runMCTS(childNode, depth - 1, false);
                         value = Math.max(value, minMaxValue);
 
                         // final decision
@@ -184,6 +185,7 @@ static double runMCTS(Node node, int depth, boolean maximizingPlayer) {
         } else if (!maximizingPlayer) {
             double value = 999999999;
             int nSize = node.boardGame.nSize;
+            double minMaxValue =0;
             for (int i = 0; i < nSize; i++) {
                 for (int j = 0; j < nSize; j++) {
                     if (node.boardGame.currentPlayer == node.boardGame.board[i][j]) {
@@ -193,7 +195,7 @@ static double runMCTS(Node node, int depth, boolean maximizingPlayer) {
                         childNode.boardGame.takeTurn(i, j);
                         // apply immedieatly ?
                         //nodeChilds.add(childNode);
-                        double minMaxValue = runMCTS(childNode, depth - 1, true);
+                        minMaxValue += runMCTS(childNode, depth - 1, true);
                         value = Math.min(value, minMaxValue);
 
                         // change move

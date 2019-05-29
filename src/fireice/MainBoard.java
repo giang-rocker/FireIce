@@ -186,6 +186,10 @@ public final class MainBoard extends javax.swing.JFrame {
             g.setColor(Color.blue);
             g.drawString(gameResult, dx - 30, 50 + dx);
         }
+        else if(this.boardGame.winner==TileType.NONE) {
+            g.setColor(Color.green);
+            g.drawString(gameResult, dx - 30, 50 + dx);
+        }
 
     }
 
@@ -281,11 +285,7 @@ public final class MainBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_formMouseMoved
     String gameResult = "";
     private void formMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseReleased
-        
-        if (AIisThinking) {
-            System.out.println("AI is thinking...");
-            return;
-        }
+     
         
         if (!(this.boardGame.isValidMove(sX, sY))) {
             System.out.println("Invalid Move");
@@ -300,10 +300,13 @@ public final class MainBoard extends javax.swing.JFrame {
             if (this.boardGame.winner == this.boardGame.HumanPlayer) {
                 humanWin++;
                 gameResult = "HUMAN WIN";
-            } else {
+            } else if (this.boardGame.winner == this.boardGame.AIPlayer) {
                 gameResult = "AI WIN";
                 AIWin++;
             }
+            else 
+                 gameResult = "DRAW";
+            
             this.paint(this.getGraphics());
             return;
         }
@@ -320,10 +323,12 @@ public final class MainBoard extends javax.swing.JFrame {
             if (this.boardGame.winner == this.boardGame.HumanPlayer) {
                 humanWin++;
                 gameResult = "HUMAN WIN";
-            } else {
+            } else if (this.boardGame.winner == this.boardGame.AIPlayer) {
                 gameResult = "AI WIN";
                 AIWin++;
             }
+            else 
+                 gameResult = "DRAW";
             this.paint(this.getGraphics());
             return;
         }
@@ -339,28 +344,29 @@ public final class MainBoard extends javax.swing.JFrame {
         int maxDepth = 15;
         int remainingStone = this.boardGame.blueScore + this.boardGame.redScore;
         int sqrtSize = (int) (Math.sqrt(remainingStone));
-        // FIX IT LATER
-        //double k =  0.05;
-        //int maxDepth= (int)( 15* Math.exp(-k*(remainingStone-15)));
-        //maxDepth = Math.max(3,(maxDepth/2)*2 +1);
-//        //MINIMAX
-//        if (remainingStone > 50) {
-//            maxDepth = 3;
-//        } else if (remainingStone > 30) {
-//            maxDepth = 5;
-//        } else if (remainingStone > 20) {
-//            maxDepth = 7;
-//        }
-
-        //MCTS
-        if (remainingStone > 20) {
+        
+        boolean runMCTS = false;
+        if(!runMCTS) {
+        if (remainingStone > 70) {
             maxDepth = 3;
-        } else if (remainingStone > 20) {
+        } else if (remainingStone >= 32) {
             maxDepth = 5;
-        } 
+        } else if (remainingStone > 20) {
+            maxDepth = 7;
+        }
+         Node.runMinimax(MiniMax, maxDepth, true);
+        }
 
-        System.out.println(remainingStone + " " + maxDepth);
+        if (runMCTS) {
+        if (remainingStone >= 26) {
+            maxDepth = 3;
+        } else if (remainingStone >= 20) {
+            maxDepth = 5;
+        }
         Node.runMCTS(MiniMax, maxDepth, true);
+        }
+        System.out.println(remainingStone + " " + maxDepth);
+        
         sX = MiniMax.moveX;
         sY = MiniMax.moveY;
         System.out.println("AI move: " + sX + " " + sY);
@@ -381,10 +387,12 @@ public final class MainBoard extends javax.swing.JFrame {
             if (this.boardGame.winner == this.boardGame.HumanPlayer) {
                 gameResult = "HUMAN WIN";
                 humanWin++;
-            } else {
+            } else if (this.boardGame.winner == this.boardGame.AIPlayer) {
                 gameResult = "AI WIN";
                 AIWin++;
             }
+            else 
+                gameResult = "DRAW";
             return;
         }
         long estimatedTime = System.currentTimeMillis() - startTime;

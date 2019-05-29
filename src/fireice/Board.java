@@ -12,7 +12,7 @@ import java.util.Random;
  * @author giang
  */
 enum TileType {
-    RED, EMPTY, BLUE;
+    RED, EMPTY, BLUE, NONE;
 }
 
 public class Board {
@@ -189,10 +189,10 @@ public class Board {
         this.board[this.currentX][this.currentY] = TileType.EMPTY;
 
         // check current remove first
-        winner = checkEndGame();
-        if (this.winner != TileType.EMPTY) {
-            return true;
-        }
+        //winner = checkEndGame();
+        //if (this.winner != TileType.EMPTY) {
+       //     return true;
+        //}
         this.checkSideEffect();
         this.changePlayerTurn();
         winner = checkEndGame();
@@ -218,6 +218,9 @@ public class Board {
     }
 
     boolean isValidMove(int x, int y) {
+        
+        if(this.winner!=TileType.EMPTY)
+            return false;
 
         if ((x < 0 || y < 0 || x >= this.nSize || y >= this.nSize)) {
             return false;
@@ -293,6 +296,11 @@ public class Board {
     }
 
     TileType checkEndGame() {
+        
+        if (this.redScore == 0 && this.blueScore==0)
+            return TileType.NONE;
+            // draw
+        
         if (this.redScore == 0) {
             return TileType.RED;
         } else if (this.blueScore == 0) {
@@ -359,7 +367,7 @@ public class Board {
             // check result
             if (copyBoard.winner == this.currentPlayer) {
                 countWin++;
-            } else {
+            } else if (copyBoard.winner != TileType.NONE){ // can not be empty
                 countWin--;
             }
 
