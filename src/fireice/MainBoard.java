@@ -10,9 +10,12 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Label;
 import java.awt.MouseInfo;
+import java.awt.TextArea;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -34,8 +37,8 @@ public final class MainBoard extends javax.swing.JFrame {
     Board boardGame;
     final BufferedImage redBlock;
     final BufferedImage blueBlock;
-    final BufferedImage redBlockHover;
-    final BufferedImage blueBlockHover;
+    //final BufferedImage redBlockHover;
+    //final BufferedImage blueBlockHover;
     final BufferedImage bgImg;
     final BufferedImage blankTile;
     final BufferedImage labelImg;
@@ -52,15 +55,19 @@ public final class MainBoard extends javax.swing.JFrame {
     int UNIT = 64;
 
     Node MiniMax;
+    
+    TextArea txtLogMove ;
+     BufferedWriter writer;
 
     public MainBoard(String fileName, boolean isHumanRed, boolean isHumanPlayFirst) throws FileNotFoundException, IOException {
         initComponents();
         this.fileName = fileName;
+        txtLogMove = new TextArea("");
         readBoardConfiguration(fileName, isHumanRed, isHumanPlayFirst);
         redBlock = ImageIO.read(new File("img/r64.png"));
         blueBlock = ImageIO.read(new File("img/b64.png"));
-        redBlockHover = ImageIO.read(new File("img/r64_hover.png"));
-        blueBlockHover = ImageIO.read(new File("img/b64_hover.png"));
+        //redBlockHover = ImageIO.read(new File("img/r64_hover.png"));
+        //blueBlockHover = ImageIO.read(new File("img/b64_hover.png"));
         blankTile = ImageIO.read(new File("img/blankTile.png"));
         bgImg = ImageIO.read(new File("img/bg3.png"));
         labelImg = ImageIO.read(new File("img/blankLabel.png"));
@@ -80,8 +87,17 @@ public final class MainBoard extends javax.swing.JFrame {
             this.lbGameAIInfor.setForeground(new Color(255, 33, 66));
             this.lbGameAIInfor.setText("AI-RED 0");
         }
+        
+        txtLogMove.setEditable(false);
+        
+        txtLogMove.setLocation(dx, dy + 64);
+        txtLogMove.setSize(142, (nSize -3) * UNIT );
+        this.add(txtLogMove);
+        
+        writer = new BufferedWriter(new FileWriter("logSpeed.txt"));
+      
 
-       
+       this.paint(this.getGraphics());
     }
 
     public void readBoardConfiguration(String fileName, boolean isHumanRed, boolean isHumanPlayFirst) throws FileNotFoundException {
@@ -121,12 +137,15 @@ public final class MainBoard extends javax.swing.JFrame {
         this.lbGameHumanInfor.setText("Human-BLUE " + humanWin);
         }
 
+        txtLogMove.setText("");
         // AI move first
         if (this.boardGame.currentPlayer == this.boardGame.AIPlayer) {
             getAIMove();
         }
         this.nSize = this.boardGame.nSize;
         this.setSize(nSize * UNIT + marginX * 3 + 142, nSize * UNIT + (marginY * 2));
+        
+        
     }
 
     int marginX = 32;
@@ -144,9 +163,9 @@ public final class MainBoard extends javax.swing.JFrame {
                     int dx = i * 64 + marginX;
                     int dy = j * 64 + marginY;
                     g.drawImage(blankTile, dx, dy, null);
-                    if (this.boardGame.board[i][j] == TileType.BLUE) {
+                    if (this.boardGame.board[j][i] == TileType.BLUE) {
                         g.drawImage(blueBlock, dx, dy, null);
-                    } else if (this.boardGame.board[i][j] == TileType.RED) {
+                    } else if (this.boardGame.board[j][i] == TileType.RED) {
                         g.drawImage(redBlock, dx, dy, null);
                     }
 
@@ -154,15 +173,15 @@ public final class MainBoard extends javax.swing.JFrame {
             }
 
         }
-        if (!(sX < 0 || sY < 0 || sX >= this.boardGame.nSize || sY >= this.boardGame.nSize)) {
-            int dx = sX * 64 + marginX;
-            int dy = sY * 64 + marginY;
-            if (this.boardGame.board[sX][sY] == TileType.RED) {
-                g.drawImage(redBlockHover, dx, dy, null);
-            } else if (this.boardGame.board[sX][sY] == TileType.BLUE) {
-                g.drawImage(blueBlockHover, dx, dy, null);
-            }
-        }
+//        if (!(sX < 0 || sY < 0 || sX >= this.boardGame.nSize || sY >= this.boardGame.nSize)) {
+//            int dx = sX * 64 + marginX;
+//            int dy = sY * 64 + marginY;
+//            if (this.boardGame.board[sX][sY] == TileType.RED) {
+//                g.drawImage(redBlockHover, dx, dy, null);
+//            } else if (this.boardGame.board[sX][sY] == TileType.BLUE) {
+//                g.drawImage(blueBlockHover, dx, dy, null);
+//            }
+//        }
 
         // set fopnt
         g.setFont(new Font("default", Font.PLAIN, 32));
@@ -174,22 +193,24 @@ public final class MainBoard extends javax.swing.JFrame {
         g.setColor(Color.red);
         g.drawString(this.boardGame.redScore + "", dx + 55, dy + 45);
         g.drawImage(labelImg, dx, (this.nSize - 1) * UNIT, null);
-        g.setColor(Color.blue);
+        g.setColor(new Color(1, 187, 234));
         g.drawString(this.boardGame.blueScore + "", dx + 55, (this.nSize - 1) * UNIT + 45);
 
         g.setFont(new Font("default", Font.PLAIN, 50));
         dx = (this.nSize / 2) * UNIT;
-        if (this.boardGame.winner == TileType.RED) {
-            g.setColor(Color.red);
-            g.drawString(gameResult, dx - 30, 50 + dx);
-        } else if (this.boardGame.winner == TileType.BLUE) {
-            g.setColor(Color.blue);
-            g.drawString(gameResult, dx - 30, 50 + dx);
-        }
-        else if(this.boardGame.winner==TileType.NONE) {
+        
+        if(this.boardGame.isDraw() ) {
             g.setColor(Color.green);
             g.drawString(gameResult, dx - 30, 50 + dx);
         }
+        else if (this.boardGame.winner == TileType.RED) {
+            g.setColor(Color.red);
+            g.drawString(gameResult, dx - 30, 50 + dx);
+        } else if (this.boardGame.winner == TileType.BLUE) {
+            g.setColor(new Color(1, 187, 234));
+            g.drawString(gameResult, dx - 30, 50 + dx);
+        }
+        
 
     }
 
@@ -206,10 +227,10 @@ public final class MainBoard extends javax.swing.JFrame {
         btnNewGame = new javax.swing.JButton();
         lbGameAIInfor = new javax.swing.JLabel();
         lbGameHumanInfor = new javax.swing.JLabel();
+        lbStatus = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("FireIce v1.0");
-        setUndecorated(true);
         setResizable(false);
         addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent evt) {
@@ -219,6 +240,11 @@ public final class MainBoard extends javax.swing.JFrame {
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 formMouseReleased(evt);
+            }
+        });
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
             }
         });
 
@@ -239,6 +265,9 @@ public final class MainBoard extends javax.swing.JFrame {
         lbGameHumanInfor.setForeground(new java.awt.Color(255, 33, 66));
         lbGameHumanInfor.setText("Human-RED 0");
 
+        lbStatus.setBackground(java.awt.SystemColor.menu);
+        lbStatus.setText("      Win:  0%  | Thinking Time: 0ms");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -253,6 +282,7 @@ public final class MainBoard extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 379, Short.MAX_VALUE)
                 .addComponent(btnNewGame)
                 .addGap(55, 55, 55))
+            .addComponent(lbStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -264,7 +294,8 @@ public final class MainBoard extends javax.swing.JFrame {
                         .addComponent(lbGameAIInfor)
                         .addComponent(lbGameHumanInfor))
                     .addComponent(btnNewGame))
-                .addContainerGap(729, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 703, Short.MAX_VALUE)
+                .addComponent(lbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -276,8 +307,8 @@ public final class MainBoard extends javax.swing.JFrame {
         double mouseX = MouseInfo.getPointerInfo().getLocation().x - this.getLocationOnScreen().x;
 
         double mouseY = MouseInfo.getPointerInfo().getLocation().y - this.getLocationOnScreen().y;
-        sX = (int) (mouseX - marginX) / 64;
-        sY = (int) (mouseY - marginY) / 64;
+        sY = (int) (mouseX - marginX) / 64;
+        sX = (int) (mouseY - marginY) / 64;
 
 //     /   this.paint(this.getGraphics());
 
@@ -285,7 +316,11 @@ public final class MainBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_formMouseMoved
     String gameResult = "";
     private void formMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseReleased
-     
+        
+        if (this.boardGame.isDraw() || this.boardGame.winner!=TileType.EMPTY){
+            this.paint(this.getGraphics());
+            return ;
+        }
         
         if (!(this.boardGame.isValidMove(sX, sY))) {
             System.out.println("Invalid Move");
@@ -296,47 +331,43 @@ public final class MainBoard extends javax.swing.JFrame {
         //moveHuman++;
 
         System.out.println("Player move: " + sX + " " + sY);
+        txtLogMove.setText(txtLogMove.getText()+"HM: "+ sX + " " + sY+"\n");
         if (this.boardGame.winner != TileType.EMPTY) {
-            if (this.boardGame.winner == this.boardGame.HumanPlayer) {
+            if (this.boardGame.isDraw())
+                gameResult = "DRAW";
+            else if (this.boardGame.winner == this.boardGame.HumanPlayer) {
                 humanWin++;
                 gameResult = "HUMAN WIN";
             } else if (this.boardGame.winner == this.boardGame.AIPlayer) {
                 gameResult = "AI WIN";
                 AIWin++;
             }
-            else 
-                 gameResult = "DRAW";
-            
+        
             this.paint(this.getGraphics());
             return;
         }
-    this.paint(this.getGraphics());
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException ex) {
-//                Logger.getLogger(MainBoard.class.getName()).log(Level.SEVERE, null, ex);
-//            }
+        this.paint(this.getGraphics());
 
         // AI turn
         getAIMove();
         if (this.boardGame.winner != TileType.EMPTY) {
-            if (this.boardGame.winner == this.boardGame.HumanPlayer) {
+            if (this.boardGame.isDraw())
+                 gameResult = "DRAW";
+            else if (this.boardGame.winner == this.boardGame.HumanPlayer) {
                 humanWin++;
                 gameResult = "HUMAN WIN";
             } else if (this.boardGame.winner == this.boardGame.AIPlayer) {
                 gameResult = "AI WIN";
                 AIWin++;
             }
-            else 
-                 gameResult = "DRAW";
-            this.paint(this.getGraphics());
-            return;
         }
     this.paint(this.getGraphics());
     }//GEN-LAST:event_formMouseReleased
-    boolean AIisThinking = false;
+    
+    
     void getAIMove() {
-       AIisThinking = true;
+        this.lbStatus.setText("    Thinking...");
+        this.paint(this.getGraphics());
         long startTime = System.currentTimeMillis();
         MiniMax = new Node(this.boardGame);
         MiniMax.rootPlayer = this.boardGame.currentPlayer;
@@ -347,32 +378,49 @@ public final class MainBoard extends javax.swing.JFrame {
         
         boolean runMCTS = false;
         if(!runMCTS) {
-        if (remainingStone > 70) {
-            maxDepth = 3;
-        } else if (remainingStone >= 32) {
+       
+//        if (remainingStone > 70) {
+//            maxDepth = 3;
+//        } else if (remainingStone >= 32) {
+//            maxDepth = 5;
+//        } else if (remainingStone > 20) {
+//            maxDepth = 7;
+//        }
+            
+        if (remainingStone > 80) {
             maxDepth = 5;
-        } else if (remainingStone > 20) {
+        } else if (remainingStone >= 36) {
             maxDepth = 7;
+        } else if (remainingStone > 26) {
+            maxDepth = 9;
         }
-         Node.runMinimax(MiniMax, maxDepth, true);
+                
+        Node.runAlphaBeta2(MiniMax, maxDepth,-299999999,299999999, true);
+        // Node.run(MiniMax, maxDepth, true);
         }
 
         if (runMCTS) {
-        if (remainingStone >= 26) {
+//        if (remainingStone >= 26) {
+//            maxDepth = 3;
+//        } else if (remainingStone >= 20) {
+//            maxDepth = 5;
+//        }
+          
+        //MCTS
+        if (remainingStone >= 32) {
             maxDepth = 3;
-        } else if (remainingStone >= 20) {
+        } else if (remainingStone > 20) {
             maxDepth = 5;
-        }
+        } 
+        
+        
         Node.runMCTS(MiniMax, maxDepth, true);
         }
-        System.out.println(remainingStone + " " + maxDepth);
         
         sX = MiniMax.moveX;
         sY = MiniMax.moveY;
         System.out.println("AI move: " + sX + " " + sY);
-        System.out.println("Score Root: " + (MiniMax.value));
-       System.out.println("Wining Chance: " + Math.round(MiniMax.chance*100) +"%");
-        
+        txtLogMove.setText(txtLogMove.getText()+" AI:  "+ sX + " " + sY+"\n");
         this.boardGame.takeTurn(sX, sY);
         //moveAI++;
 
@@ -382,28 +430,31 @@ public final class MainBoard extends javax.swing.JFrame {
             this.lbPlayerTurn.setText("Blue Turn");
         }
 
-// check game Result
-        if (this.boardGame.winner != TileType.EMPTY) {
-            if (this.boardGame.winner == this.boardGame.HumanPlayer) {
-                gameResult = "HUMAN WIN";
-                humanWin++;
-            } else if (this.boardGame.winner == this.boardGame.AIPlayer) {
-                gameResult = "AI WIN";
-                AIWin++;
-            }
-            else 
-                gameResult = "DRAW";
-            return;
-        }
-        long estimatedTime = System.currentTimeMillis() - startTime;
-        System.out.println("Thinking Time: " + estimatedTime + "ms");
-        this.paint(this.getGraphics());
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException ex) {
-//            Logger.getLogger(MainBoard.class.getName()).log(Level.SEVERE, null, ex);
+//// check game Result
+//        if (this.boardGame.winner != TileType.EMPTY) {
+//             if (this.boardGame.isDraw())
+//                 gameResult = "DRAW";
+//            else if (this.boardGame.winner == this.boardGame.HumanPlayer) {
+//                humanWin++;
+//                gameResult = "HUMAN WIN";
+//            } else if (this.boardGame.winner == this.boardGame.AIPlayer) {
+//                gameResult = "AI WIN";
+//                AIWin++;
+//            }
+//            
+//            this.paint(this.getGraphics());
+//            return;
 //        }
-AIisThinking = false;
+        long estimatedTime = System.currentTimeMillis() - startTime;
+        try {
+            // System.out.println("Thinking Time: " + estimatedTime + "ms");
+            writer.write(remainingStone + "," + maxDepth +"," + estimatedTime+"\n");
+        } catch (IOException ex) {
+            Logger.getLogger(MainBoard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       System.out.println(remainingStone + "," + maxDepth +"," + estimatedTime);
+       this.lbStatus.setText("    Win: "+Math.round(MiniMax.chance*100)+"%  | Thinking Time: "+estimatedTime+"ms | Depth: " + maxDepth +" | Nodes: " + MiniMax.nChild +"");
+      
     }
 
     private void btnNewGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewGameActionPerformed
@@ -417,6 +468,16 @@ AIisThinking = false;
             Logger.getLogger(MainBoard.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnNewGameActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        try {
+            // TODO add your handling code here:
+
+            this.writer.close();
+        } catch (IOException ex) {
+            Logger.getLogger(MainBoard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -470,5 +531,6 @@ AIisThinking = false;
     private javax.swing.JLabel lbGameAIInfor;
     private javax.swing.JLabel lbGameHumanInfor;
     private javax.swing.JLabel lbPlayerTurn;
+    private javax.swing.JLabel lbStatus;
     // End of variables declaration//GEN-END:variables
 }
