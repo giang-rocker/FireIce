@@ -58,6 +58,9 @@ public class ConfigForm extends javax.swing.JFrame {
             e.printStackTrace();
         }
         //lbBoard.setText("Boards (found"+count+" files)");
+        
+        this.rbtn_HumanFirst.setSelected(true);
+        this.rbtn_Red.setSelected(true);
     }
     
     

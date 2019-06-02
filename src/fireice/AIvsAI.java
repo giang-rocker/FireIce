@@ -102,25 +102,34 @@ static void getAlphaBeta2(Board boardGame) {
 
         int maxDepth = 15;
         int remainingStone = boardGame.blueScore + boardGame.redScore;
-
-       if (remainingStone > 75) {
-            maxDepth = 3;
-        } else if (remainingStone >= 32) {
-            maxDepth = 5;
-        } else if (remainingStone > 20) {
-            maxDepth = 7;
-        }
-       
-//// INCREASE DEPTH                   
-//        if (remainingStone > 75) {
-//            maxDepth = 5;
-//        } else if (remainingStone >= 36) {
-//            maxDepth = 7;
-//        } else if (remainingStone > 26) {
-//            maxDepth = 9;
-//        }
-       
+ if (remainingStone > 80) {
+                maxDepth = 5;
+            } else if (remainingStone >= 36) {
+                maxDepth = 7;
+            } else if (remainingStone > 26) {
+                maxDepth = 9;
+            }
         Node.runAlphaBeta2(MinMaxNode, maxDepth,-299999999,299999999, true);
+        int sX = MinMaxNode.moveX;
+        int sY = MinMaxNode.moveY;
+        boardGame.takeTurn(sX, sY);
+    }
+
+static void getAlphaBeta2a(Board boardGame) {
+        Node MinMaxNode = new Node(boardGame);
+        MinMaxNode.rootPlayer = boardGame.currentPlayer;
+
+        int maxDepth = 15;
+        int remainingStone = boardGame.blueScore + boardGame.redScore;
+ if (remainingStone > 80) {
+                maxDepth = 5;
+            } else if (remainingStone >= 36) {
+                maxDepth = 7;
+            } else if (remainingStone > 26) {
+                maxDepth = 9;
+            }
+       
+        Node.runAlphaBeta2a(MinMaxNode, maxDepth,-299999999,299999999, true);
         int sX = MinMaxNode.moveX;
         int sY = MinMaxNode.moveY;
         boardGame.takeTurn(sX, sY);
@@ -149,7 +158,7 @@ static void getAlphaBeta2(Board boardGame) {
                 
                 while (boardGame.winner == TileType.EMPTY) {
                     startThinking = System.currentTimeMillis();
-                    getMCTSMove(boardGame);
+                    getAlphaBeta2(boardGame);
                     MCTSThinkingTime += (System.currentTimeMillis() - startThinking);
                     countMCTSMove++;
                     
@@ -164,7 +173,7 @@ static void getAlphaBeta2(Board boardGame) {
                     
                     
                     startThinking = System.currentTimeMillis();
-                  getAlphaBeta(boardGame);
+                  getAlphaBeta2a(boardGame);
                     MinMaxThinkingTime += (System.currentTimeMillis() - startThinking);
                     countMinMaxMove++;
                     
@@ -182,7 +191,7 @@ static void getAlphaBeta2(Board boardGame) {
 
                 while (boardGame.winner == TileType.EMPTY) {
                     startThinking = System.currentTimeMillis();
-                    getAlphaBeta(boardGame);
+                    getAlphaBeta2a(boardGame);
                     MinMaxThinkingTime += (System.currentTimeMillis() - startThinking);
                     countMinMaxMove++;
                     
@@ -197,7 +206,7 @@ static void getAlphaBeta2(Board boardGame) {
                     
                     
                     startThinking = System.currentTimeMillis();
-                    getMCTSMove(boardGame);
+                    getAlphaBeta2(boardGame);
                     MCTSThinkingTime += (System.currentTimeMillis() - startThinking);
                     countMCTSMove++;
 

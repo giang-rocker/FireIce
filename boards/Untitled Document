@@ -1,0 +1,725 @@
+run:
+Human is Red &  Human Plays First
+/home/giang/FireIce/boards/b2a.txt
+36
+BBRRRXBBRRRXRBRBXXBXXXXXXXXXXXXXXXXX
+6
+Human moves first
+Reward: 6
+Player move: 0 4
+AlphaBeta2a is calculating...
+-100.0
+Move max  depth 11 at 2 1 value -96.0 0 child
+0.0
+Move min depth 10 at 2 0 value -3.0 1 child
+Move max  depth 11 at 2 3 value 2.0 1 child
+-100.0
+Move max  depth 11 at 3 0 value -96.0 2 child
+Move min depth 12 at 1 2 value -5.0 1 child
+-100.0
+Move max  depth 11 at 2 1 value -97.0 0 child
+0.0
+Move min depth 10 at 2 2 value -4.0 1 child
+Move max  depth 11 at 3 0 value 0.0 1 child
+BREAK depth 11
+Move min depth 12 at 1 3 value -5.0 2 child
+100.0
+Move max  depth 11 at 2 3 value 103.0 0 child
+BREAK depth 11
+Move min depth 12 at 2 0 value 100.0 3 child
+100.0
+Move max  depth 11 at 3 0 value 104.0 0 child
+BREAK depth 11
+Move min depth 12 at 2 2 value 100.0 4 child
+Move max  depth 13 at 1 0 value 1.0 0 child
+100.0
+Move max  depth 11 at 3 0 value 104.0 0 child
+Move min depth 12 at 1 3 value 100.0 1 child
+0.0
+Move max  depth 11 at 2 3 value 3.0 0 child
+Move min depth 12 at 2 0 value -1.0 2 child
+BREAK depth 12 with final move2 0
+Move max  depth 13 at 1 1 value 5.0 1 child
+-100.0
+Move max  depth 11 at 1 0 value -96.0 0 child
+0.0
+Move min depth 10 at 2 0 value -3.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 2 3 value 2.0 1 child
+-100.0
+Move max  depth 11 at 3 0 value -96.0 2 child
+Move min depth 12 at 1 2 value -4.0 1 child
+BREAK depth 12 with final move1 2
+Move max  depth 13 at 2 1 value 1.0 2 child
+0.0
+Move min depth 10 at 2 0 value -3.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 1 0 value 2.0 0 child
+0.0
+Move min depth 10 at 2 0 value -3.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 2 1 value 2.0 1 child
+0.0
+Move min depth 10 at 2 0 value -3.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 3 0 value 2.0 2 child
+Move min depth 12 at 1 2 value -2.0 1 child
+BREAK depth 12 with final move1 2
+Move max  depth 13 at 2 3 value 1.0 3 child
+-100.0
+Move max  depth 11 at 1 0 value -96.0 0 child
+-100.0
+Move max  depth 11 at 2 1 value -96.0 1 child
+0.0
+Move min depth 10 at 2 0 value -3.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 2 3 value 2.0 2 child
+Move min depth 12 at 1 2 value -4.0 1 child
+BREAK depth 12 with final move1 2
+Move max  depth 13 at 3 0 value 1.0 4 child
+Move min depth 14 at 0 2 value 0.0 1 child
+-100.0
+Move min depth 10 at 2 0 value -103.0 1 child
+Move max  depth 11 at 1 0 value -98.0 0 child
+-100.0
+Move min depth 10 at 2 0 value -103.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 2 1 value -98.0 1 child
+0.0
+Move min depth 10 at 2 0 value -2.0 1 child
+Move max  depth 11 at 2 3 value 3.0 2 child
+BREAK depth 11
+Move min depth 12 at 1 2 value -2.0 1 child
+0.0
+Move min depth 10 at 2 2 value -4.0 1 child
+Move max  depth 11 at 1 1 value 0.0 0 child
+BREAK depth 11
+Move min depth 12 at 2 0 value -2.0 2 child
+-100.0
+Move max  depth 11 at 1 0 value -95.0 0 child
+0.0
+Move min depth 10 at 2 0 value -4.0 1 child
+Move max  depth 11 at 1 1 value 2.0 1 child
+BREAK depth 11
+Move min depth 12 at 2 2 value -2.0 3 child
+Move max  depth 13 at 0 1 value 2.0 0 child
+BREAK depth 13
+Move min depth 14 at 0 3 value -4.0 2 child
+-100.0
+Move min depth 10 at 2 0 value -103.0 1 child
+Move max  depth 11 at 1 0 value -98.0 0 child
+-100.0
+Move min depth 10 at 2 0 value -103.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 2 1 value -98.0 1 child
+0.0
+Move min depth 10 at 2 0 value -2.0 1 child
+Move max  depth 11 at 2 3 value 3.0 2 child
+BREAK depth 11
+Move min depth 12 at 0 3 value -2.0 1 child
+100.0
+Move max  depth 11 at 2 3 value 105.0 0 child
+BREAK depth 11
+Move min depth 12 at 2 0 value 103.0 2 child
+Move max  depth 13 at 0 1 value 3.0 0 child
+BREAK depth 13
+Move min depth 14 at 1 2 value -4.0 3 child
+0.0
+Move min depth 10 at 2 0 value -3.0 1 child
+Move max  depth 11 at 1 0 value 2.0 0 child
+BREAK depth 11
+Move min depth 12 at 1 2 value -3.0 1 child
+100.0
+Move max  depth 11 at 1 1 value 104.0 0 child
+BREAK depth 11
+Move min depth 12 at 2 0 value 102.0 2 child
+-100.0
+Move max  depth 11 at 1 0 value -95.0 0 child
+0.0
+Move min depth 10 at 2 0 value -4.0 1 child
+Move max  depth 11 at 1 1 value 2.0 1 child
+BREAK depth 11
+Move min depth 12 at 2 2 value -3.0 3 child
+Move max  depth 13 at 0 1 value 1.0 0 child
+BREAK depth 13
+Move min depth 14 at 1 3 value -4.0 4 child
+0.0
+Move max  depth 11 at 2 3 value 3.0 0 child
+BREAK depth 11
+Move min depth 12 at 0 2 value -4.0 1 child
+100.0
+Move max  depth 11 at 2 3 value 104.0 0 child
+BREAK depth 11
+Move min depth 12 at 0 3 value 97.0 2 child
+100.0
+Move max  depth 11 at 2 3 value 105.0 0 child
+BREAK depth 11
+Move min depth 12 at 1 2 value 97.0 3 child
+100.0
+Move min depth 12 at 1 3 value 94.0 4 child
+100.0
+Move min depth 12 at 2 2 value 95.0 5 child
+Move max  depth 13 at 0 1 value 2.0 0 child
+BREAK depth 13
+Move min depth 14 at 2 0 value 0.0 5 child
+-100.0
+Move min depth 10 at 1 3 value -105.0 1 child
+Move max  depth 11 at 1 0 value -101.0 0 child
+-100.0
+Move min depth 10 at 1 3 value -105.0 1 child
+BREAK depth 10 with final move1 3
+Move max  depth 11 at 3 0 value -101.0 1 child
+Move min depth 12 at 0 2 value -108.0 1 child
+-100.0
+Move min depth 10 at 1 2 value -105.0 1 child
+Move max  depth 11 at 1 0 value -101.0 0 child
+BREAK depth 11
+Move min depth 12 at 0 3 value -108.0 2 child
+-100.0
+Move min depth 10 at 0 3 value -105.0 1 child
+Move max  depth 11 at 1 0 value -101.0 0 child
+BREAK depth 11
+Move min depth 12 at 1 2 value -108.0 3 child
+-100.0
+Move min depth 10 at 0 2 value -105.0 1 child
+Move max  depth 11 at 1 0 value -101.0 0 child
+BREAK depth 11
+Move min depth 12 at 1 3 value -108.0 4 child
+100.0
+Move min depth 12 at 2 0 value 97.0 5 child
+Move max  depth 13 at 0 1 value -102.0 0 child
+100.0
+Move max  depth 11 at 3 0 value 105.0 0 child
+BREAK depth 11
+Move min depth 12 at 0 2 value 99.0 1 child
+-100.0
+Move min depth 10 at 1 2 value -105.0 1 child
+BREAK depth 10 with final move1 2
+Move max  depth 11 at 0 1 value -101.0 0 child
+0.0
+Move min depth 10 at 0 2 value -5.0 1 child
+-100.0
+Move min depth 10 at 1 2 value -106.0 2 child
+BREAK depth 10 with final move1 2
+Move max  depth 11 at 3 0 value -101.0 1 child
+Move min depth 12 at 0 3 value -107.0 2 child
+BREAK depth 12 with final move0 3
+Move max  depth 13 at 1 0 value -102.0 1 child
+100.0
+Move max  depth 11 at 3 0 value 104.0 0 child
+BREAK depth 11
+Move min depth 12 at 0 2 value 98.0 1 child
+0.0
+Move max  depth 11 at 3 0 value 4.0 0 child
+BREAK depth 11
+Move min depth 12 at 0 3 value -3.0 2 child
+100.0
+Move max  depth 11 at 3 0 value 104.0 0 child
+BREAK depth 11
+Move min depth 12 at 1 3 value 98.0 3 child
+100.0
+Move min depth 12 at 2 0 value 96.0 4 child
+Move max  depth 13 at 1 1 value 3.0 2 child
+BREAK depth 13
+Move min depth 14 at 2 2 value 0.0 6 child
+Move max  depth 15 at 0 0 value 1.0 0 child
+-100.0
+Move min depth 10 at 2 0 value -103.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 1 0 value -98.0 0 child
+-100.0
+Move min depth 10 at 2 0 value -103.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 2 1 value -98.0 1 child
+0.0
+Move min depth 10 at 2 0 value -2.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 2 3 value 3.0 2 child
+-100.0
+Move min depth 10 at 2 0 value -103.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 3 0 value -98.0 3 child
+Move min depth 12 at 1 2 value -3.0 1 child
+BREAK depth 12 with final move1 2
+Move max  depth 13 at 0 0 value 2.0 0 child
+-100.0
+Move max  depth 11 at 2 1 value -96.0 0 child
+0.0
+Move min depth 10 at 2 0 value -3.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 2 3 value 2.0 1 child
+-100.0
+Move max  depth 11 at 3 0 value -96.0 2 child
+Move min depth 12 at 1 2 value -5.0 1 child
+BREAK depth 12 with final move1 2
+Move max  depth 13 at 1 0 value 2.0 1 child
+100.0
+Move min depth 10 at 2 0 value 96.0 1 child
+0.0
+Move max  depth 9 at 3 0 value 4.0 0 child
+Move min depth 10 at 2 2 value -1.0 2 child
+BREAK depth 10 with final move2 2
+Move max  depth 11 at 0 0 value 5.0 0 child
+-100.0
+Move min depth 10 at 2 2 value -105.0 1 child
+BREAK depth 10 with final move2 2
+Move max  depth 11 at 1 0 value -100.0 1 child
+-100.0
+Move min depth 10 at 2 2 value -105.0 1 child
+BREAK depth 10 with final move2 2
+Move max  depth 11 at 3 0 value -101.0 2 child
+Move min depth 12 at 1 3 value 1.0 1 child
+BREAK depth 12 with final move1 3
+Move max  depth 13 at 1 1 value 6.0 2 child
+-100.0
+Move min depth 10 at 2 0 value -104.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 0 0 value -98.0 0 child
+-100.0
+Move max  depth 11 at 1 0 value -95.0 1 child
+-100.0
+Move min depth 10 at 2 0 value -103.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 2 3 value -98.0 2 child
+-100.0
+Move max  depth 11 at 3 0 value -96.0 3 child
+Move min depth 12 at 1 2 value -101.0 1 child
+BREAK depth 12 with final move1 2
+Move max  depth 13 at 2 1 value -96.0 3 child
+0.0
+Move min depth 10 at 2 0 value -3.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 0 0 value 3.0 0 child
+0.0
+Move min depth 10 at 2 0 value -3.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 1 0 value 3.0 1 child
+-100.0
+Move min depth 10 at 2 0 value -103.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 2 1 value -98.0 2 child
+-100.0
+Move min depth 10 at 2 0 value -103.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 3 0 value -98.0 3 child
+Move min depth 12 at 1 2 value -1.0 1 child
+BREAK depth 12 with final move1 2
+Move max  depth 13 at 2 3 value 2.0 4 child
+-100.0
+Move min depth 10 at 2 0 value -104.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 0 0 value -98.0 0 child
+-100.0
+Move max  depth 11 at 1 0 value -95.0 1 child
+-100.0
+Move max  depth 11 at 2 1 value -96.0 2 child
+-100.0
+Move min depth 10 at 2 0 value -103.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 2 3 value -98.0 3 child
+Move min depth 12 at 1 2 value -101.0 1 child
+BREAK depth 12 with final move1 2
+Move max  depth 13 at 3 0 value -96.0 5 child
+Move min depth 14 at 0 2 value 0.0 1 child
+BREAK depth 14 with final move0 2
+Move max  depth 15 at 0 1 value 5.0 1 child
+-100.0
+Move max  depth 11 at 2 1 value -96.0 0 child
+0.0
+Move min depth 10 at 2 0 value -3.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 2 3 value 2.0 1 child
+-100.0
+Move max  depth 11 at 3 0 value -96.0 2 child
+Move min depth 12 at 1 2 value -4.0 1 child
+BREAK depth 12 with final move1 2
+Move max  depth 13 at 0 0 value 2.0 0 child
+-100.0
+Move max  depth 11 at 2 1 value -96.0 0 child
+0.0
+Move min depth 10 at 2 0 value -3.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 2 3 value 2.0 1 child
+-100.0
+Move max  depth 11 at 3 0 value -96.0 2 child
+Move min depth 12 at 1 2 value -5.0 1 child
+BREAK depth 12 with final move1 2
+Move max  depth 13 at 0 1 value 2.0 1 child
+100.0
+Move min depth 10 at 2 0 value 96.0 1 child
+0.0
+Move max  depth 9 at 3 0 value 4.0 0 child
+Move min depth 10 at 2 2 value -1.0 2 child
+BREAK depth 10 with final move2 2
+Move max  depth 11 at 0 0 value 4.0 0 child
+-100.0
+Move min depth 10 at 2 2 value -105.0 1 child
+BREAK depth 10 with final move2 2
+Move max  depth 11 at 3 0 value -101.0 1 child
+Move min depth 12 at 1 3 value 0.0 1 child
+BREAK depth 12 with final move1 3
+Move max  depth 13 at 1 1 value 6.0 2 child
+-100.0
+Move min depth 12 at 1 2 value -106.0 1 child
+BREAK depth 12 with final move1 2
+Move max  depth 13 at 2 1 value -102.0 3 child
+0.0
+Move min depth 10 at 2 0 value -3.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 0 0 value 3.0 0 child
+0.0
+Move min depth 10 at 2 0 value -3.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 0 1 value 3.0 1 child
+-100.0
+Move max  depth 11 at 2 1 value -96.0 2 child
+-100.0
+Move max  depth 11 at 3 0 value -96.0 3 child
+Move min depth 12 at 1 2 value -1.0 1 child
+BREAK depth 12 with final move1 2
+Move max  depth 13 at 2 3 value 2.0 4 child
+-100.0
+Move min depth 12 at 1 2 value -106.0 1 child
+BREAK depth 12 with final move1 2
+Move max  depth 13 at 3 0 value -102.0 5 child
+Move min depth 14 at 0 2 value 0.0 1 child
+BREAK depth 14 with final move0 2
+Move max  depth 15 at 1 0 value 5.0 2 child
+100.0
+Move max  depth 11 at 3 0 value 104.0 0 child
+Move min depth 12 at 1 3 value 100.0 1 child
+0.0
+Move max  depth 11 at 2 3 value 3.0 0 child
+Move min depth 12 at 2 0 value -1.0 2 child
+BREAK depth 12 with final move2 0
+Move max  depth 13 at 0 0 value 5.0 0 child
+100.0
+Move max  depth 11 at 3 0 value 105.0 0 child
+Move min depth 12 at 1 3 value 101.0 1 child
+100.0
+Move max  depth 11 at 3 0 value 105.0 0 child
+BREAK depth 11
+Move min depth 12 at 2 2 value 101.0 2 child
+Move max  depth 13 at 1 0 value 106.0 1 child
+-100.0
+Move min depth 12 at 2 0 value -103.0 1 child
+BREAK depth 12 with final move2 0
+Move max  depth 13 at 2 3 value -100.0 2 child
+100.0
+Move max  depth 11 at 0 0 value 106.0 0 child
+100.0
+Move max  depth 11 at 1 0 value 106.0 1 child
+Move min depth 12 at 1 3 value 102.0 1 child
+BREAK depth 12 with final move1 3
+Move max  depth 13 at 3 0 value 106.0 3 child
+Move min depth 14 at 0 2 value 100.0 1 child
+0.0
+Move min depth 10 at 2 0 value -4.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 2 3 value 0.0 0 child
+0.0
+Move min depth 10 at 2 2 value -4.0 1 child
+BREAK depth 10 with final move2 2
+Move max  depth 11 at 3 0 value 0.0 1 child
+Move min depth 12 at 0 2 value -6.0 1 child
+BREAK depth 12 with final move0 2
+Move max  depth 13 at 0 0 value 1.0 0 child
+-100.0
+Move min depth 10 at 2 0 value -104.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 0 0 value -98.0 0 child
+-100.0
+Move max  depth 11 at 1 0 value -95.0 1 child
+-100.0
+Move min depth 10 at 2 0 value -103.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 2 3 value -98.0 2 child
+-100.0
+Move max  depth 11 at 3 0 value -96.0 3 child
+Move min depth 12 at 1 2 value -101.0 1 child
+BREAK depth 12 with final move1 2
+Move max  depth 13 at 0 1 value -97.0 1 child
+-100.0
+Move min depth 10 at 2 2 value -104.0 1 child
+BREAK depth 10 with final move2 2
+Move max  depth 11 at 0 0 value -99.0 0 child
+-100.0
+Move max  depth 11 at 2 3 value -96.0 1 child
+-100.0
+Move min depth 10 at 2 2 value -104.0 1 child
+BREAK depth 10 with final move2 2
+Move max  depth 11 at 3 0 value -99.0 2 child
+Move min depth 12 at 0 2 value -101.0 1 child
+BREAK depth 12 with final move0 2
+Move max  depth 13 at 1 0 value -97.0 2 child
+0.0
+Move min depth 10 at 2 0 value -4.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 0 0 value 2.0 0 child
+-100.0
+Move max  depth 11 at 1 0 value -95.0 1 child
+-100.0
+Move max  depth 11 at 3 0 value -96.0 2 child
+Move min depth 12 at 0 2 value -3.0 1 child
+BREAK depth 12 with final move0 2
+Move max  depth 13 at 2 3 value 1.0 3 child
+0.0
+Move min depth 10 at 2 2 value -4.0 1 child
+BREAK depth 10 with final move2 2
+Move max  depth 11 at 0 0 value 2.0 0 child
+0.0
+Move min depth 10 at 2 2 value -4.0 1 child
+BREAK depth 10 with final move2 2
+Move max  depth 11 at 1 0 value 2.0 1 child
+-100.0
+Move max  depth 11 at 2 3 value -96.0 2 child
+Move min depth 12 at 0 2 value -3.0 1 child
+BREAK depth 12 with final move0 2
+Move max  depth 13 at 3 0 value 1.0 4 child
+Move min depth 14 at 0 3 value -5.0 2 child
+BREAK depth 14 with final move0 3
+Move max  depth 15 at 1 1 value 1.0 3 child
+-100.0
+Move max  depth 11 at 1 0 value -95.0 0 child
+0.0
+Move min depth 10 at 2 0 value -4.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 1 1 value 2.0 1 child
+-100.0
+Move max  depth 11 at 3 0 value -96.0 2 child
+Move min depth 12 at 1 3 value -2.0 1 child
+BREAK depth 12 with final move1 3
+Move max  depth 13 at 0 0 value 4.0 0 child
+0.0
+Move min depth 10 at 2 0 value -4.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 0 0 value 2.0 0 child
+-100.0
+Move max  depth 11 at 1 0 value -95.0 1 child
+-100.0
+Move max  depth 11 at 3 0 value -96.0 2 child
+Move min depth 12 at 1 3 value -2.0 1 child
+BREAK depth 12 with final move1 3
+Move max  depth 13 at 0 1 value 4.0 1 child
+-100.0
+Move min depth 12 at 1 3 value -104.0 1 child
+BREAK depth 12 with final move1 3
+Move max  depth 13 at 1 0 value -99.0 2 child
+0.0
+Move min depth 10 at 2 0 value -4.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 0 0 value 2.0 0 child
+-100.0
+Move max  depth 11 at 1 0 value -95.0 1 child
+-100.0
+Move max  depth 11 at 3 0 value -96.0 2 child
+Move min depth 12 at 1 3 value -2.0 1 child
+BREAK depth 12 with final move1 3
+Move max  depth 13 at 1 1 value 4.0 3 child
+-100.0
+Move min depth 12 at 2 0 value -104.0 1 child
+BREAK depth 12 with final move2 0
+Move max  depth 13 at 2 3 value -100.0 4 child
+-100.0
+Move min depth 12 at 1 3 value -104.0 1 child
+BREAK depth 12 with final move1 3
+Move max  depth 13 at 3 0 value -100.0 5 child
+Move min depth 14 at 0 2 value -3.0 1 child
+BREAK depth 14 with final move0 2
+Move max  depth 15 at 2 1 value 1.0 4 child
+-100.0
+Move min depth 12 at 2 0 value -102.0 1 child
+BREAK depth 12 with final move2 0
+Move max  depth 13 at 0 0 value -96.0 0 child
+-100.0
+Move min depth 12 at 2 0 value -102.0 1 child
+BREAK depth 12 with final move2 0
+Move max  depth 13 at 0 1 value -96.0 1 child
+-100.0
+Move min depth 12 at 2 0 value -103.0 1 child
+BREAK depth 12 with final move2 0
+Move max  depth 13 at 1 0 value -97.0 2 child
+-100.0
+Move min depth 12 at 2 0 value -103.0 1 child
+BREAK depth 12 with final move2 0
+Move max  depth 13 at 1 1 value -96.0 3 child
+-100.0
+Move min depth 12 at 2 0 value -103.0 1 child
+BREAK depth 12 with final move2 0
+Move max  depth 13 at 2 1 value -97.0 4 child
+-100.0
+Move min depth 12 at 2 0 value -104.0 1 child
+BREAK depth 12 with final move2 0
+Move max  depth 13 at 3 0 value -99.0 5 child
+Move min depth 14 at 0 2 value -103.0 1 child
+BREAK depth 14 with final move0 2
+Move max  depth 15 at 2 3 value -100.0 5 child
+-100.0
+Move max  depth 11 at 1 0 value -96.0 0 child
+-100.0
+Move max  depth 11 at 2 1 value -96.0 1 child
+0.0
+Move min depth 10 at 2 0 value -3.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 2 3 value 2.0 2 child
+Move min depth 12 at 1 2 value -4.0 1 child
+BREAK depth 12 with final move1 2
+Move max  depth 13 at 0 0 value 2.0 0 child
+-100.0
+Move min depth 10 at 2 0 value -104.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 0 0 value -98.0 0 child
+-100.0
+Move max  depth 11 at 1 0 value -95.0 1 child
+-100.0
+Move max  depth 11 at 2 1 value -96.0 2 child
+-100.0
+Move min depth 10 at 2 0 value -103.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 2 3 value -98.0 3 child
+Move min depth 12 at 1 2 value -101.0 1 child
+BREAK depth 12 with final move1 2
+Move max  depth 13 at 0 1 value -96.0 1 child
+-100.0
+Move min depth 12 at 1 2 value -106.0 1 child
+BREAK depth 12 with final move1 2
+Move max  depth 13 at 1 0 value -102.0 2 child
+100.0
+Move max  depth 11 at 0 0 value 106.0 0 child
+100.0
+Move max  depth 11 at 1 0 value 105.0 1 child
+Move min depth 12 at 1 3 value 102.0 1 child
+100.0
+Move min depth 10 at 1 3 value 96.0 1 child
+100.0
+Move min depth 10 at 2 2 value 96.0 2 child
+Move max  depth 11 at 0 0 value 101.0 0 child
+-100.0
+Move max  depth 11 at 2 3 value -97.0 1 child
+Move min depth 12 at 2 0 value 97.0 2 child
+100.0
+Move max  depth 11 at 0 0 value 106.0 0 child
+BREAK depth 11
+Move min depth 12 at 2 2 value 102.0 3 child
+Move max  depth 13 at 1 1 value 103.0 3 child
+-100.0
+Move min depth 12 at 1 2 value -105.0 1 child
+BREAK depth 12 with final move1 2
+Move max  depth 13 at 2 1 value -102.0 4 child
+-100.0
+Move min depth 10 at 2 0 value -103.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 0 0 value -97.0 0 child
+-100.0
+Move min depth 10 at 2 0 value -103.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 0 1 value -97.0 1 child
+-100.0
+Move max  depth 11 at 1 0 value -95.0 2 child
+-100.0
+Move min depth 10 at 2 0 value -104.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 1 1 value -97.0 3 child
+-100.0
+Move max  depth 11 at 2 1 value -95.0 4 child
+Move min depth 12 at 1 2 value -100.0 1 child
+BREAK depth 12 with final move1 2
+Move max  depth 13 at 2 3 value -97.0 5 child
+Move min depth 14 at 0 2 value 97.0 1 child
+0.0
+Move min depth 10 at 2 2 value -3.0 1 child
+BREAK depth 10 with final move2 2
+Move max  depth 11 at 1 0 value 2.0 0 child
+0.0
+Move max  depth 9 at 2 3 value 4.0 0 child
+Move min depth 10 at 2 0 value -1.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 1 1 value 6.0 1 child
+-100.0
+Move max  depth 11 at 2 1 value -96.0 2 child
+-100.0
+Move min depth 10 at 2 0 value -103.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 2 3 value -99.0 3 child
+Move min depth 12 at 0 2 value 1.0 1 child
+BREAK depth 12 with final move0 2
+Move max  depth 13 at 0 0 value 6.0 0 child
+-100.0
+Move min depth 10 at 2 0 value -104.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 0 0 value -98.0 0 child
+-100.0
+Move max  depth 11 at 1 0 value -95.0 1 child
+-100.0
+Move max  depth 11 at 2 1 value -96.0 2 child
+-100.0
+Move min depth 10 at 2 0 value -103.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 2 3 value -98.0 3 child
+Move min depth 12 at 1 2 value -100.0 1 child
+BREAK depth 12 with final move1 2
+Move max  depth 13 at 0 1 value -96.0 1 child
+-100.0
+Move min depth 10 at 2 2 value -103.0 1 child
+BREAK depth 10 with final move2 2
+Move max  depth 11 at 0 0 value -97.0 0 child
+0.0
+Move min depth 10 at 2 2 value -3.0 1 child
+BREAK depth 10 with final move2 2
+Move max  depth 11 at 0 1 value 4.0 1 child
+-100.0
+Move min depth 10 at 2 2 value -104.0 1 child
+BREAK depth 10 with final move2 2
+Move max  depth 11 at 1 1 value -97.0 2 child
+-100.0
+Move max  depth 11 at 2 1 value -95.0 3 child
+-100.0
+Move max  depth 11 at 2 3 value -96.0 4 child
+Move min depth 12 at 0 2 value -2.0 1 child
+BREAK depth 12 with final move0 2
+Move max  depth 13 at 1 0 value 2.0 2 child
+0.0
+Move max  depth 9 at 2 3 value 4.0 0 child
+Move min depth 10 at 2 0 value -1.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 0 0 value 5.0 0 child
+0.0
+Move min depth 10 at 2 2 value -4.0 1 child
+BREAK depth 10 with final move2 2
+Move max  depth 11 at 1 0 value 1.0 1 child
+-100.0
+Move min depth 10 at 2 0 value -104.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 2 3 value -100.0 2 child
+Move min depth 12 at 0 2 value 1.0 1 child
+BREAK depth 12 with final move0 2
+Move max  depth 13 at 1 1 value 6.0 3 child
+-100.0
+Move min depth 12 at 0 2 value -106.0 1 child
+BREAK depth 12 with final move0 2
+Move max  depth 13 at 2 1 value -103.0 4 child
+-100.0
+Move min depth 10 at 2 0 value -103.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 0 0 value -97.0 0 child
+-100.0
+Move min depth 10 at 2 0 value -103.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 0 1 value -97.0 1 child
+-100.0
+Move max  depth 11 at 1 0 value -95.0 2 child
+-100.0
+Move min depth 10 at 2 0 value -104.0 1 child
+BREAK depth 10 with final move2 0
+Move max  depth 11 at 1 1 value -97.0 3 child
+-100.0
+Move max  depth 11 at 2 1 value -95.0 4 child
+Move min depth 12 at 0 2 value -101.0 1 child
+BREAK depth 12 with final move0 2
+Move max  depth 13 at 2 3 value -97.0 5 child
+Move min depth 14 at 0 3 value 0.0 2 child
+BREAK depth 14 with final move0 3
+Move max  depth 15 at 3 0 value 5.0 6 child
+AB2a Score root: 5.0 move: 3 0 child 7
+AI move: 3 0
+

@@ -20,9 +20,12 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.ComboBox;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
 /**
@@ -55,9 +58,10 @@ public final class MainBoard extends javax.swing.JFrame {
     int UNIT = 64;
 
     Node MiniMax;
-    
-    TextArea txtLogMove ;
-     BufferedWriter writer;
+
+    TextArea txtLogMove;
+    BufferedWriter writer;
+    int countGame = 0;
 
     public MainBoard(String fileName, boolean isHumanRed, boolean isHumanPlayFirst) throws FileNotFoundException, IOException {
         initComponents();
@@ -76,7 +80,7 @@ public final class MainBoard extends javax.swing.JFrame {
         // init label
         int dx = nSize * UNIT + marginX * 2;
         int dy = 1 * UNIT;
-        
+
         this.isHumanRed = isHumanRed;
         this.isHumanPlayFirst = isHumanPlayFirst;
 
@@ -87,17 +91,38 @@ public final class MainBoard extends javax.swing.JFrame {
             this.lbGameAIInfor.setForeground(new Color(255, 33, 66));
             this.lbGameAIInfor.setText("AI-RED 0");
         }
-        
-        txtLogMove.setEditable(false);
-        
-        txtLogMove.setLocation(dx, dy + 64);
-        txtLogMove.setSize(142, (nSize -3) * UNIT );
-        this.add(txtLogMove);
-        
-        writer = new BufferedWriter(new FileWriter("logSpeed.txt"));
-      
 
-       this.paint(this.getGraphics());
+        txtLogMove.setEditable(false);
+
+        txtLogMove.setLocation(dx, dy + 64);
+        txtLogMove.setSize(142, (this.nSize - 3) * UNIT);
+
+        selectAlg.setLocation(dx, dx - UNIT);
+        selectAlg.setSize(142, 32);
+        btnNewGame.setLocation(dx, 15);
+        btnNewGame.setSize(142, 32);
+        this.drawIndex.setSelected(true);
+
+        lbStatus.setLocation(5, dx - 32);
+        lbStatus.setSize(dx + 142, 32);
+
+        this.add(txtLogMove);
+
+        selectAlg.removeAllItems();
+        selectAlg.addItem("AlphaBeta2a");
+        selectAlg.addItem("AlphaBeta2");
+        selectAlg.addItem("AlphaBeta1");
+        selectAlg.addItem("MCTS-Like");
+        selectAlg.setSelectedIndex(0);
+
+        lbGameHumanInfor.setLocation(80, 10);
+        lbGameAIInfor.setLocation(200, 10);
+        lbPlayerTurn.setLocation(5, 10);
+        lbGameHumanInfor.setSize(110, 12);
+        lbGameAIInfor.setSize(110, 12);
+        lbPlayerTurn.setSize(100, 12);
+
+        this.paint(this.getGraphics());
     }
 
     public void readBoardConfiguration(String fileName, boolean isHumanRed, boolean isHumanPlayFirst) throws FileNotFoundException {
@@ -122,30 +147,36 @@ public final class MainBoard extends javax.swing.JFrame {
 
         System.out.println(config);
         this.boardGame = new Board(n, config, isHumanRed, isHumanPlayFirst);
-        
-        if (isHumanRed)
-        this.lbPlayerTurn.setText("Red Turn");
-        else 
-        this.lbPlayerTurn.setText("Blue Turn");
-        
-        if (isHumanRed){
-        this.lbGameAIInfor.setText("- " + AIWin + " AI-BLUE");
-        this.lbGameHumanInfor.setText("Human-RED " + humanWin);
+
+        if (isHumanRed) {
+            this.lbPlayerTurn.setForeground(Color.RED);
+            this.lbPlayerTurn.setText("Red Turn");
+        } else {
+            this.lbPlayerTurn.setForeground(new Color(1, 187, 234));
+            this.lbPlayerTurn.setText("Blue Turn");
         }
-        else {
-        this.lbGameAIInfor.setText("- " + AIWin + " AI-RED");
-        this.lbGameHumanInfor.setText("Human-BLUE " + humanWin);
+
+        if (isHumanRed) {
+            this.lbGameAIInfor.setText("- " + AIWin + " AI-BLUE");
+            this.lbGameHumanInfor.setText("Human-RED " + humanWin);
+        } else {
+            this.lbGameAIInfor.setText("- " + AIWin + " AI-RED");
+            this.lbGameHumanInfor.setText("Human-BLUE " + humanWin);
         }
 
         txtLogMove.setText("");
+        try {
+            writer = new BufferedWriter(new FileWriter("logMove" + countGame + ".txt"));
+        } catch (IOException ex) {
+            Logger.getLogger(MainBoard.class.getName()).log(Level.SEVERE, null, ex);
+        }
         // AI move first
         if (this.boardGame.currentPlayer == this.boardGame.AIPlayer) {
             getAIMove();
         }
         this.nSize = this.boardGame.nSize;
         this.setSize(nSize * UNIT + marginX * 3 + 142, nSize * UNIT + (marginY * 2));
-        
-        
+
     }
 
     int marginX = 32;
@@ -155,6 +186,8 @@ public final class MainBoard extends javax.swing.JFrame {
         super.paint(g);
 
         //g.drawImage(bgImg, 0, 40, nSize*UNIT + marginX*3 + 142  , nSize*UNIT + marginY*2,this);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 8));
+        g.setColor(Color.black);
         if (this.boardGame != null) {
             int n = this.boardGame.nSize;
 
@@ -165,8 +198,14 @@ public final class MainBoard extends javax.swing.JFrame {
                     g.drawImage(blankTile, dx, dy, null);
                     if (this.boardGame.board[j][i] == TileType.BLUE) {
                         g.drawImage(blueBlock, dx, dy, null);
+                        if (this.drawIndex.isSelected()) {
+                            g.drawString("(" + j + "," + i + ")", dx + 15, dy + 15);
+                        }
                     } else if (this.boardGame.board[j][i] == TileType.RED) {
                         g.drawImage(redBlock, dx, dy, null);
+                        if (this.drawIndex.isSelected()) {
+                            g.drawString("(" + j + "," + i + ")", dx + 15, dy + 15);
+                        }
                     }
 
                 }
@@ -198,19 +237,17 @@ public final class MainBoard extends javax.swing.JFrame {
 
         g.setFont(new Font("default", Font.PLAIN, 50));
         dx = (this.nSize / 2) * UNIT;
-        
-        if(this.boardGame.isDraw() ) {
+
+        if (this.boardGame.isDraw()) {
             g.setColor(Color.green);
             g.drawString(gameResult, dx - 30, 50 + dx);
-        }
-        else if (this.boardGame.winner == TileType.RED) {
+        } else if (this.boardGame.winner == TileType.RED) {
             g.setColor(Color.red);
             g.drawString(gameResult, dx - 30, 50 + dx);
         } else if (this.boardGame.winner == TileType.BLUE) {
             g.setColor(new Color(1, 187, 234));
             g.drawString(gameResult, dx - 30, 50 + dx);
         }
-        
 
     }
 
@@ -228,6 +265,8 @@ public final class MainBoard extends javax.swing.JFrame {
         lbGameAIInfor = new javax.swing.JLabel();
         lbGameHumanInfor = new javax.swing.JLabel();
         lbStatus = new javax.swing.JLabel();
+        selectAlg = new javax.swing.JComboBox<>();
+        drawIndex = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("FireIce v1.0");
@@ -247,8 +286,11 @@ public final class MainBoard extends javax.swing.JFrame {
                 formWindowClosing(evt);
             }
         });
+        getContentPane().setLayout(null);
 
         lbPlayerTurn.setText("Red Turn");
+        getContentPane().add(lbPlayerTurn);
+        lbPlayerTurn.setBounds(12, 13, 62, 17);
 
         btnNewGame.setText("New Game");
         btnNewGame.addActionListener(new java.awt.event.ActionListener() {
@@ -256,47 +298,42 @@ public final class MainBoard extends javax.swing.JFrame {
                 btnNewGameActionPerformed(evt);
             }
         });
+        getContentPane().add(btnNewGame);
+        btnNewGame.setBounds(657, 12, 88, 29);
 
         lbGameAIInfor.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
         lbGameAIInfor.setForeground(new java.awt.Color(1, 187, 234));
         lbGameAIInfor.setText("- 0 AI-BLUE");
+        getContentPane().add(lbGameAIInfor);
+        lbGameAIInfor.setBounds(196, 12, 82, 18);
 
         lbGameHumanInfor.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
         lbGameHumanInfor.setForeground(new java.awt.Color(255, 33, 66));
         lbGameHumanInfor.setText("Human-RED 0");
+        getContentPane().add(lbGameHumanInfor);
+        lbGameHumanInfor.setBounds(92, 12, 98, 18);
 
         lbStatus.setBackground(java.awt.SystemColor.menu);
         lbStatus.setText("      Win:  0%  | Thinking Time: 0ms");
+        getContentPane().add(lbStatus);
+        lbStatus.setBounds(0, 743, 666, 26);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lbPlayerTurn)
-                .addGap(18, 18, 18)
-                .addComponent(lbGameHumanInfor)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbGameAIInfor)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 379, Short.MAX_VALUE)
-                .addComponent(btnNewGame)
-                .addGap(55, 55, 55))
-            .addComponent(lbStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lbPlayerTurn)
-                        .addComponent(lbGameAIInfor)
-                        .addComponent(lbGameHumanInfor))
-                    .addComponent(btnNewGame))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 703, Short.MAX_VALUE)
-                .addComponent(lbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+        selectAlg.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        selectAlg.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectAlgActionPerformed(evt);
+            }
+        });
+        getContentPane().add(selectAlg);
+        selectAlg.setBounds(678, 743, 122, 27);
+
+        drawIndex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                drawIndexActionPerformed(evt);
+            }
+        });
+        getContentPane().add(drawIndex);
+        drawIndex.setBounds(12, 36, 22, 24);
 
         pack();
         setLocationRelativeTo(null);
@@ -312,37 +349,47 @@ public final class MainBoard extends javax.swing.JFrame {
 
 //     /   this.paint(this.getGraphics());
 
-
     }//GEN-LAST:event_formMouseMoved
     String gameResult = "";
     private void formMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseReleased
-        
-        if (this.boardGame.isDraw() || this.boardGame.winner!=TileType.EMPTY){
+
+        if (this.boardGame.isDraw() || this.boardGame.winner != TileType.EMPTY) {
             this.paint(this.getGraphics());
-            return ;
-        }
-        
-        if (!(this.boardGame.isValidMove(sX, sY))) {
-            System.out.println("Invalid Move");
             return;
         }
 
+        if (!(this.boardGame.isValidMove(sX, sY))) {
+            System.out.println("Invalid Move");
+            lbStatus.setText("Invalid Move!!!!");
+            this.paint(this.getGraphics());
+            return;
+        }
+
+        try {
+            // System.out.println("Thinking Time: " + estimatedTime + "ms");
+            writer.write(this.boardGame.currentPlayer + " (" + sX + ", " + sY + ")\n");
+        } catch (IOException ex) {
+            Logger.getLogger(MainBoard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         this.boardGame.takeTurn(sX, sY);
+         System.out.println("Reward: " + this.boardGame.reward);
         //moveHuman++;
 
         System.out.println("Player move: " + sX + " " + sY);
-        txtLogMove.setText(txtLogMove.getText()+"HM: "+ sX + " " + sY+"\n");
+
+        txtLogMove.setText(txtLogMove.getText() + "HM: " + sX + " " + sY + "\n");
         if (this.boardGame.winner != TileType.EMPTY) {
-            if (this.boardGame.isDraw())
+            if (this.boardGame.isDraw()) {
                 gameResult = "DRAW";
-            else if (this.boardGame.winner == this.boardGame.HumanPlayer) {
+            } else if (this.boardGame.winner == this.boardGame.HumanPlayer) {
                 humanWin++;
                 gameResult = "HUMAN WIN";
             } else if (this.boardGame.winner == this.boardGame.AIPlayer) {
                 gameResult = "AI WIN";
                 AIWin++;
             }
-        
+
             this.paint(this.getGraphics());
             return;
         }
@@ -351,9 +398,9 @@ public final class MainBoard extends javax.swing.JFrame {
         // AI turn
         getAIMove();
         if (this.boardGame.winner != TileType.EMPTY) {
-            if (this.boardGame.isDraw())
-                 gameResult = "DRAW";
-            else if (this.boardGame.winner == this.boardGame.HumanPlayer) {
+            if (this.boardGame.isDraw()) {
+                gameResult = "DRAW";
+            } else if (this.boardGame.winner == this.boardGame.HumanPlayer) {
                 humanWin++;
                 gameResult = "HUMAN WIN";
             } else if (this.boardGame.winner == this.boardGame.AIPlayer) {
@@ -361,10 +408,12 @@ public final class MainBoard extends javax.swing.JFrame {
                 AIWin++;
             }
         }
-    this.paint(this.getGraphics());
+
+        this.paint(this.getGraphics());
     }//GEN-LAST:event_formMouseReleased
-    
-    
+
+    String selectedAlgorithm = "AlphaBeta2a";
+
     void getAIMove() {
         this.lbStatus.setText("    Thinking...");
         this.paint(this.getGraphics());
@@ -375,58 +424,95 @@ public final class MainBoard extends javax.swing.JFrame {
         int maxDepth = 15;
         int remainingStone = this.boardGame.blueScore + this.boardGame.redScore;
         int sqrtSize = (int) (Math.sqrt(remainingStone));
-        
-        boolean runMCTS = false;
-        if(!runMCTS) {
-       
-//        if (remainingStone > 70) {
-//            maxDepth = 3;
-//        } else if (remainingStone >= 32) {
-//            maxDepth = 5;
-//        } else if (remainingStone > 20) {
-//            maxDepth = 7;
-//        }
-            
-        if (remainingStone > 80) {
-            maxDepth = 5;
-        } else if (remainingStone >= 36) {
-            maxDepth = 7;
-        } else if (remainingStone > 26) {
-            maxDepth = 9;
-        }
-                
-        Node.runAlphaBeta2(MiniMax, maxDepth,-299999999,299999999, true);
-        // Node.run(MiniMax, maxDepth, true);
+
+        if (selectedAlgorithm.equals("AlphaBeta1")) {
+            System.out.println("AlphaBeta1 is calculating...");
+            if (remainingStone > 70) {
+                maxDepth = 5;
+            } else if (remainingStone >= 32) {
+                maxDepth = 7;
+            } else if (remainingStone > 20) {
+                maxDepth = 9;
+            }
+
+            Node.runAlphaBeta(MiniMax, 3, -299999999, 299999999, true);
+            System.out.println("AB1 Score root: " + MiniMax.value + " move: " + MiniMax.moveX + " " + MiniMax.moveY + " child " + MiniMax.nChild);
+         //   MiniMax = new Node(this.boardGame);
+        //    MiniMax.rootPlayer = this.boardGame.currentPlayer;
+          //  Node.runMinimax(MiniMax, maxDepth, true);
+         //   System.out.println("MinMax1 Score root: " + MiniMax.value + " move: " + MiniMax.moveX + " " + MiniMax.moveY + " child " + MiniMax.nChild);
+
+        } else if (selectedAlgorithm.equals("AlphaBeta2")) {
+            System.out.println("AlphaBeta2 is calculating...");
+           if (remainingStone > 70) {
+                maxDepth = 3;
+            } else if (remainingStone >= 32) {
+                maxDepth = 5;
+            } else if (remainingStone > 20) {
+                maxDepth = 7;
+            }
+
+            Node.runAlphaBeta2(MiniMax, maxDepth, -299999999, 299999999, true);
+            System.out.println("AB2 Score root: " + MiniMax.value + " move: " + MiniMax.moveX + " " + MiniMax.moveY + " child " + MiniMax.nChild);
+        } else if (selectedAlgorithm.equals("AlphaBeta2a")) {
+            System.out.println("AlphaBeta2a is calculating...");
+//
+//              if (remainingStone > 70) {
+//                maxDepth = 5;
+//            } else if (remainingStone >= 32) {
+//                maxDepth = 7;
+//            } else if (remainingStone > 20) {
+//                maxDepth = 9;
+//            }
+                if (remainingStone > 50) {
+                    maxDepth = 3;
+                } else if (remainingStone >= 32) {
+                    maxDepth = 5;
+                } else if (remainingStone > 20) {
+                    maxDepth = 7;
+                }
+
+           Node.runAlphaBeta2a(MiniMax, maxDepth, -299999999, 299999999, true);
+           System.out.println("AB2a Score root: " + MiniMax.value + " move: " + MiniMax.moveX + " " + MiniMax.moveY + " child " + MiniMax.nChild);
+           MiniMax = new Node(this.boardGame);
+            MiniMax.rootPlayer = this.boardGame.currentPlayer;
+             Node.runMinimax2(MiniMax, maxDepth, true);
+            System.out.println("MinMax2 Score root: " + MiniMax.value + " move: " + MiniMax.moveX + " " + MiniMax.moveY + " child " + MiniMax.nChild);
+        } else if (selectedAlgorithm.equals("MCTS-Like")) {
+            //MCTS
+            if (remainingStone >= 32) {
+                maxDepth = 3;
+            } else if (remainingStone > 20) {
+                maxDepth = 5;
+            }
+
+            System.out.println("MCTS-Like is calculating with depth  " + maxDepth + "...");
+
+            Node.runMCTS(MiniMax, maxDepth, true);
+            System.out.println("done MCTS");
         }
 
-        if (runMCTS) {
-//        if (remainingStone >= 26) {
-//            maxDepth = 3;
-//        } else if (remainingStone >= 20) {
-//            maxDepth = 5;
-//        }
-          
-        //MCTS
-        if (remainingStone >= 32) {
-            maxDepth = 3;
-        } else if (remainingStone > 20) {
-            maxDepth = 5;
-        } 
-        
-        
-        Node.runMCTS(MiniMax, maxDepth, true);
-        }
-        
         sX = MiniMax.moveX;
         sY = MiniMax.moveY;
         System.out.println("AI move: " + sX + " " + sY);
-        txtLogMove.setText(txtLogMove.getText()+" AI:  "+ sX + " " + sY+"\n");
+        txtLogMove.setText(txtLogMove.getText() + " AI:  " + sX + " " + sY + "\n");
+
+        try {
+            // System.out.println("Thinking Time: " + estimatedTime + "ms");
+            writer.write(this.boardGame.currentPlayer + " (" + sX + ", " + sY + ")\n");
+        } catch (IOException ex) {
+            Logger.getLogger(MainBoard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         this.boardGame.takeTurn(sX, sY);
+       
         //moveAI++;
 
         if (this.boardGame.currentPlayer == TileType.RED) {
+            this.lbPlayerTurn.setForeground(Color.RED);
             this.lbPlayerTurn.setText("Red Turn");
         } else {
+            this.lbPlayerTurn.setForeground(new Color(1, 187, 234));
             this.lbPlayerTurn.setText("Blue Turn");
         }
 
@@ -446,15 +532,10 @@ public final class MainBoard extends javax.swing.JFrame {
 //            return;
 //        }
         long estimatedTime = System.currentTimeMillis() - startTime;
-        try {
-            // System.out.println("Thinking Time: " + estimatedTime + "ms");
-            writer.write(remainingStone + "," + maxDepth +"," + estimatedTime+"\n");
-        } catch (IOException ex) {
-            Logger.getLogger(MainBoard.class.getName()).log(Level.SEVERE, null, ex);
-        }
-       System.out.println(remainingStone + "," + maxDepth +"," + estimatedTime);
-       this.lbStatus.setText("    Win: "+Math.round(MiniMax.chance*100)+"%  | Thinking Time: "+estimatedTime+"ms | Depth: " + maxDepth +" | Nodes: " + MiniMax.nChild +"");
-      
+//        
+//       System.out.println(remainingStone + "," + maxDepth +"," + estimatedTime);
+        this.lbStatus.setText("    Win: " + Math.round(Math.abs(MiniMax.chance * 100)) + "%  | Thinking Time: " + estimatedTime + "ms | Depth: " + maxDepth + " | Nodes: " + MiniMax.nChild + "");
+
     }
 
     private void btnNewGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewGameActionPerformed
@@ -462,6 +543,19 @@ public final class MainBoard extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             // create new game
+            try {
+                // TODO add your handling code here:
+                if (this.boardGame.isDraw()) {
+                    writer.write("Winner: DRAW\n");
+                } else {
+                    writer.write("Winner: " + this.boardGame.winner + "\n");
+                }
+                this.writer.close();
+            } catch (IOException ex) {
+                Logger.getLogger(MainBoard.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            countGame++;
+
             readBoardConfiguration(this.fileName, isHumanRed, isHumanPlayFirst);
             this.paint(this.getGraphics());
         } catch (FileNotFoundException ex) {
@@ -472,12 +566,29 @@ public final class MainBoard extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         try {
             // TODO add your handling code here:
-
+            if (this.boardGame.isDraw()) {
+                writer.write("Winner: DRAW\n");
+            } else {
+                writer.write("Winner: " + this.boardGame.winner + "\n");
+            }
             this.writer.close();
         } catch (IOException ex) {
             Logger.getLogger(MainBoard.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_formWindowClosing
+
+    private void drawIndexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawIndexActionPerformed
+        // TODO add your handling code here:
+        this.paint(this.getGraphics());
+    }//GEN-LAST:event_drawIndexActionPerformed
+
+    private void selectAlgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectAlgActionPerformed
+        // TODO add your handling code here:
+        if (this.selectAlg.getSelectedItem() == null) {
+            return;
+        }
+        this.selectedAlgorithm = this.selectAlg.getSelectedItem().toString();
+    }//GEN-LAST:event_selectAlgActionPerformed
 
     /**
      * @param args the command line arguments
@@ -513,9 +624,9 @@ public final class MainBoard extends javax.swing.JFrame {
                 MainBoard boardGameForm = null;
                 try {
 
-                    int size = 4; //Integer.parseInt(args[0]);
+                    int size = 10; //Integer.parseInt(args[0]);
                     //System.out.println("b"+size+".txt");
-                    boardGameForm = new MainBoard("boards/b" + size + ".txt", true, true);
+                    boardGameForm = new MainBoard("boards/b" + size + "a.txt", true, true);
                 } catch (IOException ex) {
                     Logger.getLogger(MainBoard.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -528,9 +639,11 @@ public final class MainBoard extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNewGame;
+    private javax.swing.JCheckBox drawIndex;
     private javax.swing.JLabel lbGameAIInfor;
     private javax.swing.JLabel lbGameHumanInfor;
     private javax.swing.JLabel lbPlayerTurn;
     private javax.swing.JLabel lbStatus;
+    private javax.swing.JComboBox<String> selectAlg;
     // End of variables declaration//GEN-END:variables
 }

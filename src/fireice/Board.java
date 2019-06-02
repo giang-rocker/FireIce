@@ -25,15 +25,15 @@ public class Board {
     int currentX;
     int currentY;
     //boolean playerTurn = true; // true for red and false for blue
-    int redScore;
-    int blueScore;
+    int redScore=0;
+    int blueScore=0;
     TileType currentPlayer;
     TileType winner;
-    
+
     List<Integer> redTile, blueTile;
+
+    int reward = 0;
     
-    
-    int reward  =0 ;
 
     TileType HumanPlayer;
     TileType AIPlayer;
@@ -60,11 +60,15 @@ public class Board {
             for (int j = 0; j < this.nSize; j++) {
                 if (boardConfiguration.charAt(index) == 'R') {
                     this.board[i][j] = TileType.RED;
-                    redTile.add(i*this.nSize+j);
+                    redTile.add(i * this.nSize + j);
+                    this.redScore++;
                 } else if (boardConfiguration.charAt(index) == 'B') {
                     this.board[i][j] = TileType.BLUE;
-                    blueTile.add(i*this.nSize+j);
+                    blueTile.add(i * this.nSize + j);
+                    this.blueScore++;
                 }
+                else 
+                     this.board[i][j] = TileType.EMPTY;
                 index++;
             }
         }
@@ -85,10 +89,10 @@ public class Board {
             System.out.println("AI moves first");
         }
 
-        this.redScore = (this.nSize * this.nSize) / 2;
-        this.blueScore = (this.nSize * this.nSize) / 2;
+        //this.redScore = (this.nSize * this.nSize) / 2;
+        //this.blueScore = (this.nSize * this.nSize) / 2;
         this.winner = TileType.EMPTY;
-        
+
     }
 
     public Board(int n, boolean isHumanPlayFirst) {
@@ -98,9 +102,9 @@ public class Board {
         int index = 0;
         this.redTile = new ArrayList<>();
         this.blueTile = new ArrayList<>();
-        
+
         randomBoard();
-        
+
         this.currentPlayer = TileType.RED;
 
         this.redScore = (this.nSize * this.nSize) / 2;
@@ -123,11 +127,15 @@ public class Board {
             for (int j = 0; j < this.nSize; j++) {
                 if (boardConfiguration.charAt(index) == 'R') {
                     this.board[i][j] = TileType.RED;
-                    redTile.add(i*this.nSize+j);
+                    redTile.add(i * this.nSize + j);
+                    this.redScore++;
                 } else if (boardConfiguration.charAt(index) == 'B') {
                     this.board[i][j] = TileType.BLUE;
-                    blueTile.add(i*this.nSize+j);
+                    blueTile.add(i * this.nSize + j);
+                    this.blueScore++;
                 }
+                else 
+                     this.board[i][j] = TileType.EMPTY;
                 index++;
             }
         }
@@ -147,8 +155,8 @@ public class Board {
             System.out.println("AI moves first");
         }
 
-        this.redScore = (this.nSize * this.nSize) / 2;
-        this.blueScore = (this.nSize * this.nSize) / 2;
+        //this.redScore = (this.nSize * this.nSize) / 2;
+        //this.blueScore = (this.nSize * this.nSize) / 2;
         this.winner = TileType.EMPTY;
     }
 
@@ -157,7 +165,7 @@ public class Board {
         this.redTile.addAll(b.redTile);
         this.blueTile = new ArrayList<>();
         this.blueTile.addAll(b.blueTile);
-        
+
         this.nSize = b.nSize;
         this.board = new TileType[b.nSize][b.nSize];
 
@@ -172,6 +180,7 @@ public class Board {
         this.blueScore = b.blueScore;
         this.winner = b.winner;
         this.currentPlayer = b.currentPlayer;
+        this.reward = b.reward;
     }
 
     void randomBoard() {
@@ -183,10 +192,10 @@ public class Board {
             for (int j = 0; j < this.nSize; j++) {
                 if (index % 2 == 0) {
                     this.board[i][j] = TileType.RED;
-                     this.redTile.add(i*this.nSize+j);
+                    this.redTile.add(i * this.nSize + j);
                 } else {
                     this.board[i][j] = TileType.BLUE;
-                    this.blueTile.add(i*this.nSize+j);
+                    this.blueTile.add(i * this.nSize + j);
 
                 }
                 index++;
@@ -197,6 +206,7 @@ public class Board {
     }
 
     boolean takeTurn(int x, int y) {
+        this.reward = 0;
 
         if (!isValidMove(x, y)) {
             return false;
@@ -212,33 +222,35 @@ public class Board {
         if (this.board[this.currentX][this.currentY] == TileType.RED) {
             this.redScore--;
         }
-        this.reward=1;
-        
+        this.reward = 1;
+
         //this.board[this.currentX][this.currentY] = TileType.EMPTY;
-        removeTile(this.currentX,this.currentY);
+        removeTile(this.currentX, this.currentY);
 
         // check current remove first
         winner = checkEndGame();
         this.checkSideEffect();
         this.changePlayerTurn();
         winner = checkEndGame();
-        
+
         return true;
     }
-    
-    boolean removeTile(int x,int y ) {
+
+    boolean removeTile(int x, int y) {
         this.board[x][y] = TileType.EMPTY;
-        int index = this.redTile.indexOf(x*this.nSize+y);
-        if (index!=-1)
-            this.redTile.remove(this.redTile.indexOf(x*this.nSize+y));
-        
-        index = this.blueTile.indexOf(x*this.nSize+y);
-        if (index!=-1)
-            this.blueTile.remove(this.blueTile.indexOf(x*this.nSize+y));
-        
+        int index = this.redTile.indexOf(x * this.nSize + y);
+        if (index != -1) {
+            this.redTile.remove(this.redTile.indexOf(x * this.nSize + y));
+        }
+
+        index = this.blueTile.indexOf(x * this.nSize + y);
+        if (index != -1) {
+            this.blueTile.remove(this.blueTile.indexOf(x * this.nSize + y));
+        }
+
         return true;
     }
-    
+
     private void changePlayerTurn() {
         if (this.currentPlayer == TileType.BLUE) {
             this.currentPlayer = TileType.RED;
@@ -257,9 +269,10 @@ public class Board {
     }
 
     boolean isValidMove(int x, int y) {
-        
-        if(this.winner!=TileType.EMPTY)
+
+        if (this.winner != TileType.EMPTY) {
             return false;
+        }
 
         if ((x < 0 || y < 0 || x >= this.nSize || y >= this.nSize)) {
             return false;
@@ -288,7 +301,7 @@ public class Board {
 
     void checkSideEffect() {
         int countR = 0;
-        int countB =0 ;
+        int countB = 0;
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 int dx = currentX + i;
@@ -330,57 +343,66 @@ public class Board {
                             countR++;
                         }
                         //this.board[dx][dy] = TileType.EMPTY;
-                        removeTile(dx,dy);
+                        removeTile(dx, dy);
                     }
                 }
 
             }
         }
-        
-        if (this.currentPlayer==TileType.RED)
-            this.reward += (countR + (4-countB));
-        else 
-            this.reward += (countB + (4-countR));
+
+        if (this.currentPlayer == TileType.RED) {
+            this.reward += (countR + (4 - countB));
+        } else {
+            this.reward += (countB + (4 - countR));
+        }
     }
- public boolean isDraw() {
-    return (this.redScore ==0 && this.blueScore ==0);
+
+    public boolean isDraw() {
+        return (this.redScore == 0 && this.blueScore == 0);
     }
+
     TileType checkEndGame() {
-        
-        if (isDraw())
+
+        if (isDraw()) {
+            if (this.winner==TileType.EMPTY)
+                this.winner= this.currentPlayer;
             return this.winner;
-        
+        }
+
         if (this.redScore == 0) {
             return TileType.RED;
         } else if (this.blueScore == 0) {
             return TileType.BLUE;
         }
-        
-        
+
         return TileType.EMPTY;
     }
 
     double evaluate(TileType player) {
         double value = 0;
-            
-        if (this.winner == player)
-            return 100;
-        else if (this.winner != TileType.EMPTY && this.winner != player)
-            return -100;
+
+         if (isDraw())
+             return 0;
         
+        if (this.winner == player) {
+            return 10000;
+        } else if (this.winner!=TileType.EMPTY && this.winner != player) {
+            return -10000;
+        }
+
         if (this.blueScore == 0) {
             if (player == TileType.BLUE) {
-                return 100;
+                return 10000;
             } else {
-                return -100;
+                return -10000;
             }
         }
 
         if (this.redScore == 0) {
             if (player == TileType.RED) {
-                return 100;
+                return 10000;
             } else {
-                return -100;
+                return -10000;
             }
         }
 
@@ -395,88 +417,111 @@ public class Board {
 
     double evaluate2(TileType player) {
         
-        if(this.winner!=TileType.EMPTY)
+        if (this.isDraw())
+            return 0;
+        
+        if (this.winner != TileType.EMPTY) {
             return evaluate(player);
-        
+        }
+
         double value = 0;
-        double countRedRemovable =0;
-        double countBlueRemovable =0;
-        
-        for (int cX =0; cX < this.nSize; cX++)
-        for (int cY=0; cY < this.nSize; cY++)    {
-            
-            if (this.board[cX][cY] != this.currentPlayer)
+        double countRedRemovable = 0;
+        double countBlueRemovable = 0;
+        //System.out.println(this.currentPlayer + " " + player);
+
+        for (int cX = 0; cX < this.nSize; cX++) {
+            for (int cY = 0; cY < this.nSize; cY++) {
+
+                if (this.board[cX][cY] != this.currentPlayer) {
                     continue;
-            
-            for (int i = -1; i <= 1; i++) {
-                for (int j = -1; j <= 1; j++) {
-                    int dx = cX + i;
-                    int dy = cY + j;
+                }
 
-                    if (!isValidPosition(dx, dy)) {
-                        continue;
-                    }
-                    
-                    if (this.board[dx][dy] == TileType.EMPTY) {
+                for (int i = -1; i <= 1; i++) {
+                    for (int j = -1; j <= 1; j++) {
+                        int dx = cX + i;
+                        int dy = cY + j;
+
+                        if (!isValidPosition(dx, dy)) {
                             continue;
-                    }
-                    boolean f = false;
-                    if (Math.abs(i + j) == 1) {
-                        for (int t = -1; t <= 1 && !f; t++) 
-                            for (int k = -1; k <= 1 && !f; k++) 
-                                if (Math.abs(t + k) == 1) {
-                                    int dt = dx + t;
-                                    int dk = dy + k;
+                        }
 
-                                    if ((isValidPosition(dt, dk)) && this.board[dt][dk] != TileType.EMPTY)
-                                        f = true;
+                        if (this.board[dx][dy] == TileType.EMPTY) {
+                            continue;
+                        }
+                        boolean f = false;
+                        if (Math.abs(i + j) == 1) {
+                            for (int t = -1; t <= 1 && !f; t++) {
+                                for (int k = -1; k <= 1 && !f; k++) {
+                                    if (Math.abs(t + k) == 1) {
+                                        int dt = dx + t;
+                                        int dk = dy + k;
 
+                                        if ((isValidPosition(dt, dk)) && this.board[dt][dk] == TileType.EMPTY) {
+                                            f = true;
+                                        }
+
+                                    }
                                 }
-                          
-                            if (f) 
-                                if (this.board[dx][dy]==TileType.RED)
+                            }
+
+                            if (f) {
+                                if (this.board[dx][dy] == TileType.RED) {
                                     countRedRemovable++;
-                                else  if (this.board[dx][dy]==TileType.BLUE)
-                                    countRedRemovable++;
+                                } else if (this.board[dx][dy] == TileType.BLUE) {
+                                    countBlueRemovable++;
+                                }
+                            }
                         }
                     }
 
                 }
+            }
         }
-        
+        //System.out.println(countRedRemovable +" "+ countBlueRemovable);
         value = countRedRemovable - countBlueRemovable;
-        
-        value/=(this.nSize*this.nSize);
-        
-        if(this.currentPlayer==TileType.BLUE)
+        //System.out.println(value);
+        //value /= (this.nSize * this.nSize);
+
+        if (player == TileType.BLUE) {
             value = -value;
-        
-        
-        
-        return value ;
+        }
+
+        return value;
     }
 
-    
     void randomMove() {
         // random move current player
         int dX = -1;
         int dY = -1;
+     //   System.out.println(this.redTile.size() + " " + this.blueTile.size());
+      //    System.out.println(this.redScore + " " + this.blueScore);
+        if (this.redTile.size() == 0 || this.blueTile.size() == 0) {
+            return;
+        }
 
-        do {
-            Random random = new Random();
-            int index =-1;
-            if (this.currentPlayer==TileType.RED && this.redTile.size()>0){
-                index = random.nextInt(this.redTile.size());
-                dX = this.redTile.get(index)/this.nSize;
-                dY = this.redTile.get(index)%this.nSize;
-            }
-            else if (this.currentPlayer==TileType.BLUE&& this.blueTile.size()>0) {
-                index = random.nextInt(this.blueTile.size());
-                dX = this.blueTile.get(index)/this.nSize;
-                dY = this.blueTile.get(index)%this.nSize;
-            }
-            
-        } while (!this.takeTurn(dX, dY));
+        Random random = new Random();
+        int index = -1;
+        
+        if (this.currentPlayer == TileType.RED && this.redTile.size() > 0) {
+            index = random.nextInt(this.redTile.size());
+         //   System.out.println(index + "/" + this.redTile.size());
+
+            dX = this.redTile.get(index) / this.nSize;
+            dY = this.redTile.get(index) % this.nSize;
+        //    System.out.println(index + " "+ dX + " "+ dY + " " + this.redTile );
+
+        } else if (this.currentPlayer == TileType.BLUE && this.blueTile.size() > 0) {
+
+            index = random.nextInt(this.blueTile.size());
+         //   System.out.println(index + "/" + this.blueTile.size());
+            dX = this.blueTile.get(index) / this.nSize;
+            dY = this.blueTile.get(index) % this.nSize;
+       //     System.out.println(index + " "+ dX + " "+ dY + " " + this.blueTile );
+
+        }
+
+        this.takeTurn(dX, dY);
+      //   System.out.println(this.currentPlayer + " " + this.winner + " " + this.redScore + " " + this.blueScore);
     }
 
     double simmulation(int nSimulation, TileType player) {
@@ -487,25 +532,42 @@ public class Board {
 
             // random move
             while (copyBoard.winner == TileType.EMPTY) {
-            copyBoard.randomMove(); // move of current player and take turn change player
-            
-            if (copyBoard.winner != TileType.EMPTY) 
+             //   System.out.println("MainLoop");
+
+                copyBoard.randomMove(); // move of current player and take turn change player
+
+                if (copyBoard.winner != TileType.EMPTY) {
                     break;
-                
-            copyBoard.randomMove();
+                }
+
+                copyBoard.randomMove();
             }
 
             // check result
-            if (copyBoard.isDraw())
+            if (copyBoard.isDraw()) {
                 continue;
+            }
             if (copyBoard.winner == player) {
                 countWin++;
-            } else  { // can not be empty
+            } else { // can not be empty
                 countWin--;
             }
 
         }
-
+       // System.out.println("done simmulation");
         return countWin * 1.0 / nSimulation;
+    }
+    
+    void printBoard () {
+        
+        for (int i=0; i < this.nSize; i++){
+        for (int j=0; j < this.nSize; j++)
+            if (this.board[i][j]==TileType.EMPTY)
+            System.out.print("X ");
+            else 
+            System.out.print(this.board[i][j].toString().substring(0,1) + " ");
+        System.out.println("");
+        }
+    
     }
 }
